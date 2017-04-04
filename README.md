@@ -49,6 +49,7 @@ Normal Distribution for Quality Control Sample
 <p align="left">
   <img src="https://en.wikipedia.org/wiki/File:NormalDist1.96.png#/media/File:NormalDist1.96.png" width="350"/>
 </p>
+
 ```
 local a=5/100
 print(st.normal_inv_D(a/2))
