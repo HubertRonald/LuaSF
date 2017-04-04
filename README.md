@@ -26,6 +26,11 @@ It will return a table containing a set of functions.
 
 ## Sample
 
+Experiment Twice Two Dice
+<p align="left">
+  <img src="https://cloud.githubusercontent.com/assets/7612715/24643736/6b0dbf8c-18d5-11e7-955a-f1ab05233489.png" width="350"/>
+</p>
+
 ```
 --[[
 --------------------------------------------
