@@ -1,16 +1,14 @@
 --[[
---------------------------------------------
--- change "LuaStat" in your project
--- if you need specific another directory
---------------------------------------------
+	------------------------------------------
+	-- change "LuaStat" in your project
+	-- if you need specific another directory
+	------------------------------------------
 ]]
 local dirLuaStat = "LuaStat"
 
 return {
 	
--------------------
 -- math functions
--------------------
 rand = math.random,
 ln = math.log,
 
@@ -54,7 +52,8 @@ end,
 normalD = function (mu, sig)
 	-- normal standar: mu=0,sig=1
 	-- method schmeiser
-	local mu, sig, r = mu or 0, sig or 1, rand()
+	local st = require(dirLuaStat) -- auto reference
+	local mu, sig, r = mu or 0, sig or 1, st.rand()
 	local z = (r^0.135 - (1-r)^0.135)/0.1975
 	return z*sig + mu
 end,
@@ -67,13 +66,14 @@ normal_inv_D = function (p, mu, sig)
 	return z*sig + mu
 end,
 
-bernoulliD = function (p) if rand()<= p then return 1 else return 0 end end,
-unifD = function (min,max) return (max-min)*rand() + min end,
-expoD = function (beta) return (-1/beta)*ln(rand()) end,
-weibullD = function (alpha,beta) return alpha*(-ln(rand()))^(1/beta) end,
+bernoulliD = function (p) local st = require(dirLuaStat) if st.rand()<= p then return 1 else return 0 end end,
+unifD = function (min,max) local st = require(dirLuaStat); return (max-min)*st.rand() + min end,
+expoD = function (beta) local st = require(dirLuaStat); return (-1/beta)*ln(st.rand()) end,
+weibullD = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-ln(st.rand()))^(1/beta) end,
 
 trianD = function(a,b,c)
-	if rand() <= (b-a)/(c-1) then
+	local st = require(dirLuaStat)	-- auto reference
+	if st.rand() <= (b-a)/(c-1) then
 		return a + ((b-a)*(c-a)*r)^0.5
 	else
 		return c - ((c-b)*(c-a)*(1-r))^0.5
