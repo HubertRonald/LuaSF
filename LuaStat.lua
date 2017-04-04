@@ -1,14 +1,18 @@
--------------------
--- math functions
--------------------
-local rand = math.random
-local ln = math.log
-
+--[[
+--------------------------------------------
 -- change "LuaStat" in your project
 -- if you need specific another directory
+--------------------------------------------
+]]
 local dirLuaStat = "LuaStat"
 
 return {
+	
+-------------------
+-- math functions
+-------------------
+rand = math.random,
+ln = math.log,
 
 -- sum array function
 sumF = function (array)
