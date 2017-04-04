@@ -45,29 +45,7 @@ frecuencyF = function(array)
 		end
 	end
 	return frec
-end
---[[
---------------------------------------------
-sample
-twice two dice
---------------------------------------------
-local mList={}
-for i=1,10000 do mList[i]=math.random(1,6)+math.random(1,6) end
-local frecu = frecuencyF(mList)
-
--- report Form 1
-for k,v in pairs(frecu) do
-	for key, va in pairs(v) do
-		print(key, va)
-	end
-end
-
--- report Form 2
-for i=1, #frecu.c do
-	print(frecu.g[i],frecu.c[i])
-end
---------------------------------------------
-]]
+end,
 
 normalD = function (mu, sig)
 	-- normal standar: mu=0,sig=1
