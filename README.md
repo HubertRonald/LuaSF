@@ -51,9 +51,17 @@ Normal Distribution for Quality Control Sample
 </p>
 
 ```
+-- Normal Distribution Probability
 local a=5/100
 print(st.normal_inv_D(a/2))
 print(st.normal_inv_D(1-a/2))
+--[[
+--------------------------------------------
+  Print:
+ 	-1.9688213737864
+	1.9688213737864
+--------------------------------------------
+]]
 ```
 
 ## Built With
