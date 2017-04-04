@@ -1,9 +1,9 @@
 # LuaSF : Lua Statistics Functions
 # LuaSF
-*Lua Statistics Functions* (LuaStat) is a small library which offers a clean, minimalistic but powerful API for discrete and continuous Pseudo-random variables mainly.
+*Lua Statistics Functions* (LuaSF) is a small library which offers a clean, minimalistic but powerful API for discrete and continuous Pseudo-random variables mainly.
 
 ## Usage
-Add [LuaSF.lua](https://github.com/HubertRonald/LuaSF/blob/master/LuaStat.lua) file inside your project.<br/>
+Add [LuaSF.lua](https://github.com/HubertRonald/LuaSF/blob/master/LuaSF.lua) file inside your project.<br/>
 Call it using __require__ function.</br>
 It will return a table containing a set of functions.
 
