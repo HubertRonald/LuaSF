@@ -47,7 +47,7 @@ end
 ```
 Normal Distribution for Quality Control Sample
 <p align="left">
-  <img src="https://en.wikipedia.org/wiki/File:NormalDist1.96.png#/media/File:NormalDist1.96.png" width="350"/>
+  <img src="https://cloud.githubusercontent.com/assets/7612715/24643414/6e2b2a3a-18d3-11e7-9edd-9eb54d7744ca.png" width="350"/>
 </p>
 
 ```
