@@ -108,8 +108,14 @@ chiSquare = function(n)
 end,
 
 gamRand = function(alpha, lamba)
-	-- generator using Marsaglia and Tsang method
-	-- See details in the work of [Marsaglia and Tsang (2000)].
+	--[[
+		------------------------------------------------------------
+		-- generator using Marsaglia and Tsang method
+		-- See details in the work of [Marsaglia and Tsang (2000)].
+		-- check this paper:
+		-- http://www.ijcse.com/docs/INDJCSE14-05-06-048.pdf
+		------------------------------------------------------------
+	]]
 	local st = requiere(dirLuaStat) -- auto reference
 	local va=0
 	if alpha >= 1 then
@@ -130,8 +136,7 @@ gamRand = function(alpha, lamba)
 	elseif alpha>0 and alpha<1 then
 		va=st.gamRand(alpha+1,lamba)
 		va=va*st.rand()^(1/alpha)
-	else print("alpha > 0")
-	end
+	else print("alpha must be > 0") end
 	return va
 end,
 
