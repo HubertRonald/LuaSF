@@ -106,4 +106,33 @@ chiSquare = function(n)
 	return va^0.5
 
 end,
+
+gamRand = function(alpha, lamba)
+	-- generator using Marsaglia and Tsang method
+	-- See details in the work of [Marsaglia and Tsang (2000)].
+	local st = requiere(dirLuaStat) -- auto reference
+	local va=0
+	if alpha >= 1 then
+		local d=alpha-1/3
+		local c=1/(9*d)^.5
+		while true
+			local Z=st.normalD()
+			if Z>-1/c then
+				local V=(1+c*Z)^3
+				local U=st.rand()
+				if st.ln(U)<0.5*Z^2+d-d*V+d*st.ln(V) then
+					va=d*V/lamba
+					break
+				end
+			end
+		end
+		
+	elseif alpha>0 and alpha<1 then
+		va=st.gamRand(alpha+1,lamba)
+		va=va*st.rand()^(1/alpha)
+	else print("alpha > 0")
+	end
+	return va
+end,
+
 }
