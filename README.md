@@ -23,6 +23,7 @@ It will return a table containing a set of functions.
 * binomialD = function(n,p)               : Binomial Distribution
 * poissonD = function(lamba)              : Poisson Distribution
 * chiSquare = function(n)                 : ChiSquare Distribution
+* gamRand = function(alpha, lamba)	  : Gamma Distribution
 
 ## Sample
 
