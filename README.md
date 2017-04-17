@@ -24,6 +24,7 @@ It will return a table containing a set of functions.
 * poissonD = function(lamba)              : Poisson Distribution
 * chiSquare = function(n)                 : ChiSquare Distribution
 * gamRand = function(alpha, lamba)	  : Gamma Distribution
+* lognoRand = function(m, s)		  : Log-normal Distribution
 
 ## Sample
 
