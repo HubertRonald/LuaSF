@@ -26,6 +26,7 @@ It will return a table containing a set of functions.
 * chiSquare = function(n)                 : ChiSquare Distribution - RV
 * gamRand = function(alpha, lamba)	  : Gamma Distribution - RV
 * lognoRand = function(m, s)		  : Log-normal Distribution - RV
+
 **/RV: Random Variable**
 
 ## Sample
