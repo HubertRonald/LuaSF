@@ -14,17 +14,19 @@ It will return a table containing a set of functions.
 * stvF = function(array)                  : (n-1) Standar Desviation
 * frecuencyF = function(array)            : Frecuency Distribution
 * nomalD = function (mu, sig)             : Normal Distribution
-* normal_inv_D = function (p, mu, sig)    : Normal-Inverse Gaussian Distribution (NIG)
-* bernoulliD = function (p)               : Bernoulli Distribution
-* unifD = function (min,max)              : Uniform Distribution
-* expoD = function (beta)                 : Exponential Distribution
-* weibullD = function (alpha,beta)        : Weibull Distribution
-* trianD = function(a,b,c)                : Triangular Distribution
-* binomialD = function(n,p)               : Binomial Distribution
-* poissonD = function(lamba)              : Poisson Distribution
-* chiSquare = function(n)                 : ChiSquare Distribution
-* gamRand = function(alpha, lamba)	  : Gamma Distribution
-* lognoRand = function(m, s)		  : Log-normal Distribution
+* normal_inv_D = function (p, mu, sig)    : Normal-Inverse Gaussian Distribution (NIG) - RV
+* bernoulliD = function (p)               : Bernoulli Distribution - RV
+* unifD = function (min,max)              : Uniform Distribution - RV
+* expoD = function (beta)                 : Exponential Distribution - RV
+* weibullD = function (alpha,beta)        : Weibull Distribution - RV
+* trianD = function(a,b,c)                : Triangular Distribution - RV
+* binomialD = function(n,p)               : Binomial Distribution - RV
+* geometricD = function(p)		  : Geomtric Distribution - RV
+* poissonD = function(lamba)              : Poisson Distribution - RV
+* chiSquare = function(n)                 : ChiSquare Distribution - RV
+* gamRand = function(alpha, lamba)	  : Gamma Distribution - RV
+* lognoRand = function(m, s)		  : Log-normal Distribution - RV
+**/RV: Random Variable**
 
 ## Sample
 
