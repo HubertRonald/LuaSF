@@ -72,8 +72,8 @@ end,
 
 bernoulliD = function (p) local st = require(dirLuaStat) if st.rand()<= p then return 1 else return 0 end end,
 unifD = function (min,max) local st = require(dirLuaStat); return (max-min)*st.rand() + min end,
-expoD = function (beta) local st = require(dirLuaStat); return (-1/beta)*ln(st.rand()) end,
-weibullD = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-ln(st.rand()))^(1/beta) end,
+expoD = function (beta) local st = require(dirLuaStat); return (-1/beta)*st.ln(st.rand()) end,
+weibullD = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-st.ln(st.rand()))^(1/beta) end,
 
 trianD = function(a,b,c)
 	local st = require(dirLuaStat)	-- auto reference
@@ -104,6 +104,20 @@ poissonD = function(lamba)
 	return va
 end,
 
+geometricD = function (p)
+	--[[
+		------------------------------------------------------------
+		-- See details in:
+		-- https://math.stackexchange.com/questions/485448/prove-the-way-to-generate-geometrically-distributed-random-numbers
+		------------------------------------------------------------
+	]]
+	local st = require(dirLuaStat) -- auto reference
+	local U = st.rand()
+	local va = st.ln(U)/st.ln(1-p)
+	return va
+end,
+
+	
 chiSquare = function(n)
 	local st = require(dirLuaStat) -- auto reference
 	local va = 0
