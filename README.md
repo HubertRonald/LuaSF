@@ -19,6 +19,7 @@ It will return a table containing a set of functions.
 * unifD = function (min,max)              : Uniform Distribution - RV
 * expoD = function (beta)                 : Exponential Distribution - RV
 * weibullD = function (alpha,beta)        : Weibull Distribution - RV
+* erlangD = function(n, lambda)		  : Erlang Distribution - RV
 * trianD = function(a,b,c)                : Triangular Distribution - RV
 * binomialD = function(n,p)               : Binomial Distribution - RV
 * geometricD = function(p)		  : Geomtric Distribution - RV
