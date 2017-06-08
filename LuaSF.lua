@@ -75,6 +75,13 @@ unifD = function (min,max) local st = require(dirLuaStat); return (max-min)*st.r
 expoD = function (beta) local st = require(dirLuaStat); return (-1/beta)*st.ln(st.rand()) end,
 weibullD = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-st.ln(st.rand()))^(1/beta) end,
 
+erlangD = function(n, lambda)
+	local st = require(dirLuaStat)	-- auto reference
+	local VaErlang = 0
+	for i=1, n do VaErlang = VaErlang + st.expoD(lambda) end
+	return VaErlang
+end,
+	
 trianD = function(a,b,c)
 	local st = require(dirLuaStat)	-- auto reference
 	local a,b,c = a or 1, b or 2, c or 3
