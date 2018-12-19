@@ -44,7 +44,7 @@ pow = math.pow,
 -- sum array function
 sumF = function (array)
 	local s = 0
-	for _,v in pairs(array) do s=s+v end
+	for _, v in pairs(array) do s=s+v end
 	return s
 end,
 
@@ -78,7 +78,7 @@ frecuencyF = function(array)
 	return frec
 end,
 
-normalD = function (mu, sig)
+normalVA = function (mu, sig)
 	-- normal standar: mu=0,sig=1
 	-- method schmeiser
 	local st = require(dirLuaStat) -- auto reference
@@ -95,19 +95,19 @@ normal_inv_D = function (p, mu, sig)
 	return z*sig + mu
 end,
 
-bernoulliD = function (p) local st = require(dirLuaStat) if st.rand()<= p then return 1 else return 0 end end,
-unifD = function (min,max) local st = require(dirLuaStat); return (max-min)*st.rand() + min end,
-expoD = function (beta) local st = require(dirLuaStat); return (-1/beta)*st.ln(st.rand()) end,
-weibullD = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-st.ln(st.rand()))^(1/beta) end,
+bernoulliVA = function (p) local st = require(dirLuaStat) if st.rand()<= p then return 1 else return 0 end end,
+unifVA = function (min,max) local st = require(dirLuaStat); return (max-min)*st.rand() + min end,
+expoVA = function (beta) local st = require(dirLuaStat); return (-1/beta)*st.ln(st.rand()) end,
+weibullVA = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-st.ln(st.rand()))^(1/beta) end,
 
-erlangD = function(n, lambda)
+erlangVA = function(n, lambda)
 	local st = require(dirLuaStat)	-- auto reference
 	local VaErlang = 0
-	for i=1, n do VaErlang = VaErlang + st.expoD(lambda) end
+	for i=1, n do VaErlang = VaErlang + st.expoVA(lambda) end
 	return VaErlang
 end,
 	
-trianD = function(a,b,c)
+trianVA = function(a,b,c)
 	local st = require(dirLuaStat)	-- auto reference
 	local a,b,c = a or 1, b or 2, c or 3
 	if st.rand() <= (b-a)/(c-1) then
@@ -117,26 +117,26 @@ trianD = function(a,b,c)
 	end
 end,
 
-binomialD = function(n,p)
+binomialVA = function(n,p)
 	local st = require(dirLuaStat) -- auto reference
 	local n, p , va = n or 1, p or 0.5, 0
 	-- convolution method
-	for i=1,n do va=va+st.bernoulliD(p) end
+	for i=1,n do va=va+st.bernoulliVA(p) end
 	return va
 end,
 
-poissonD = function(lamba)
+poissonVA = function(lamba)
 	local st = require(dirLuaStat) -- auto reference
 	local t, va, lamba = 0, 0, lamba or 0.5
 	-- convolution method
 	while true do
-		t = t+st.expoD(1/lamba)
+		t = t+st.expoVA(1/lamba)
 		if t <= 1 then va = va + 1 else break end
 	end
 	return va
 end,
 
-geometricD = function (p)
+geometricVA = function (p)
 	--[[
 		------------------------------------------------------------
 		-- See details in:
@@ -150,15 +150,14 @@ geometricD = function (p)
 end,
 
 	
-chiSquare = function(n)
+chiSquareVA = function(n)
 	local st = require(dirLuaStat) -- auto reference
 	local va = 0
-	for i=1, n do va = va + st.normalD() end
+	for i=1, n do va = va + st.normalVA() end
 	return va^0.5
-
 end,
 
-gamRand = function(alpha, lamba)
+gamVA = function(alpha, lamba)
 	--[[
 		------------------------------------------------------------
 		-- generator using Marsaglia and Tsang method
@@ -174,7 +173,7 @@ gamRand = function(alpha, lamba)
 		local d=alpha-1/3
 		local c=1/(9*d)^.5
 		while (true) do
-			local Z=st.normalD()
+			local Z=st.normalVA()
 			if Z>-1/c then
 				local V=(1+c*Z)^3
 				local U=st.rand()
@@ -186,13 +185,13 @@ gamRand = function(alpha, lamba)
 		end
 		
 	elseif alpha>0 and alpha<1 then
-		va=st.gamRand(alpha+1,lamba)
+		va=st.gamVA(alpha+1,lamba)
 		va=va*st.rand()^(1/alpha)
 	else print("alpha must be > 0") end
 	return va
 end,
 
-lognoRand = function(m, s)
+lognoVA = function(m, s)
 	--[[
 		------------------------------------------------------------
 		-- Took
