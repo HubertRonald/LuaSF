@@ -13,20 +13,20 @@ It will return a table containing a set of functions.
 * avF = function (array)                  : Average Array
 * stvF = function(array)                  : (n-1) Standar Desviation
 * frecuencyF = function(array)            : Frecuency Distribution
-* nomalD = function (mu, sig)             : Normal Distribution
+* nomalVA = function (mu, sig)            : Normal Distribution
 * normal_inv_D = function (p, mu, sig)    : Normal-Inverse Gaussian Distribution (NIG) - RV
-* bernoulliD = function (p)               : Bernoulli Distribution - RV
-* unifD = function (min,max)              : Uniform Distribution - RV
-* expoD = function (beta)                 : Exponential Distribution - RV
-* weibullD = function (alpha,beta)        : Weibull Distribution - RV
-* erlangD = function(n, lambda)		  : Erlang Distribution - RV
-* trianD = function(a,b,c)                : Triangular Distribution - RV
-* binomialD = function(n,p)               : Binomial Distribution - RV
-* geometricD = function(p)		  : Geomtric Distribution - RV
-* poissonD = function(lamba)              : Poisson Distribution - RV
-* chiSquare = function(n)                 : ChiSquare Distribution - RV
-* gamRand = function(alpha, lamba)	  : Gamma Distribution - RV
-* lognoRand = function(m, s)		  : Log-normal Distribution - RV
+* bernoulliVA = function (p)              : Bernoulli Distribution - RV
+* unifVA = function (min,max)             : Uniform Distribution - RV
+* expoVA = function (beta)                : Exponential Distribution - RV
+* weibullVA = function (alpha,beta)       : Weibull Distribution - RV
+* erlangVA = function(n, lambda)	  : Erlang Distribution - RV
+* trianVA = function(a,b,c)               : Triangular Distribution - RV
+* binomialVA = function(n,p)              : Binomial Distribution - RV
+* geometricVA = function(p)		  : Geomtric Distribution - RV
+* poissonVA = function(lamba)             : Poisson Distribution - RV
+* chiSquareVA = function(n)               : ChiSquare Distribution - RV
+* gamVA = function(alpha, lamba)	  : Gamma Distribution - RV
+* lognoRandVA = function(m, s)		  : Log-normal Distribution - RV
 
 **/RV: Random Variable**
 
@@ -52,7 +52,7 @@ local frecu = st.frecuencyF(mList)
 
 -- report
 for i=1, #frecu.c do
-	print("Frecuency - Sum Number:",frecu.g[i],frecu.c[i])
+	print("Frecuency - Sum Number:", frecu.g[i], frecu.c[i])
 end
 --------------------------------------------
 ```
