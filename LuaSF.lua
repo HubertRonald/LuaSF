@@ -90,7 +90,7 @@ end,
 normal_inv_D = function (p, mu, sig)
 	-- nomal standar mu=0,sig=1, p~[0,1]: (probability)
 	-- method schmeiser
-	local mu, sig, p = mu or 0, sig or 1, 0.5
+	local mu, sig, p = mu or 0, sig or 1, p or 0.5 -- 'p' parameter fixed
 	local z = (p^0.135 - (1-p)^0.135)/0.1975
 	return z*sig + mu
 end,
