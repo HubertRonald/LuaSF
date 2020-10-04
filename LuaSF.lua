@@ -109,11 +109,11 @@ local function unifVA(min,max)
 end
 
 local function expoVA(beta) 
-	return (-1/beta)*ln(rand())
+	return (-1/beta)*ln(1.0-rand())
 end
 
 local function weibullVA(alpha,beta)
-	return alpha*(-ln(rand()))^(1/beta)
+	return alpha*(-ln(1.0-rand()))^(1/beta)
 end
 
 local function erlangVA(n, lambda)
@@ -144,7 +144,7 @@ local function poissonVA(lamba)
 	local t, va, lamba = 0, 0, lamba or 0.5
 	-- convolution method
 	while true do
-		t = t+expoVA(1/lamba)
+		t = t+expoVA(lamba)
 		if t <= 1 then
 			va = va + 1
 		else
@@ -161,7 +161,7 @@ local function geometricVA(p)
 		-- https://math.stackexchange.com/questions/485448/prove-the-way-to-generate-geometrically-distributed-random-numbers
 		------------------------------------------------------------
 	]]
-	local U = rand()
+	local U = 1-rand()
 	local va = ln(U)/ln(1-p)
 	return va
 end
@@ -191,7 +191,7 @@ local function gamVA(alpha, lamba)
 			local Z=normalVA()
 			if Z>-1/c then
 				local V=(1+c*Z)^3
-				local U=rand()
+				local U=1-rand()
 				if ln(U)<0.5*Z^2+d-d*V+d*ln(V) then
 					va=d*V/lamba
 					break
