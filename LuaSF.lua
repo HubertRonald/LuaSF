@@ -29,43 +29,45 @@
 
 	------------------------------------------
 ]]
-local dirLuaStat = "LuaStat"
 
-return {
-	
 -- math functions
-rand = math.random,
-ln = math.log,		-- natural logarithm
-sqrt = math.sqrt,
-pi = math.pi,
-exp = math.exp,		-- e exponent	
-pow = math.pow,	
+local rand = math.random
+local ln = math.log		-- natural logarithm
+local sqrt = math.sqrt
+local pi = math.pi
+local exp = math.exp		-- e exponent
+local pow = math.pow
+
+-- non-math functions
+local ipairs = ipairs
+local table_sort = table.sort
 
 -- sum array function
-sumF = function (array)
+local function sumF(array)
 	local s = 0
-	for _, v in pairs(array) do s=s+v end
+	for _, v in ipairs(array) do s=s+v end
 	return s
-end,
+end
 
 -- average array function
-avF = function (array)
-	local st = require(dirLuaStat) -- auto reference
-	local s = st.sumF(array)
+local function avF(array)
+	local s = sumF(array)
 	return s/#array
-end,
+end
 
--- (n-1) standar desviation
-stvF = function(array)
-	local st =require(dirLuaStat) -- auto reference
-	local xp, sq = st.avF(array), 0
-	for _,v in pairs(array) do sq = sq + (v - xp)^2 end
+-- (n-1) standard deviation
+local function stvF(array)
+	local xp, sq = avF(array), 0
+	for _,v in ipairs(array) do sq = sq + (v - xp)^2 end
 	return (sq/(#array-1))^0.5
-end,
+end
 
-frecuencyF = function(array)
-	local list, frec = array, {g={},c={}}	-- group, count
-	table.sort(list)
+local function frecuencyF(array)
+	local list, frec = {}, {g={},c={}}	-- group, count
+	for k,v in ipairs(array) do
+		list[k] = v
+	end
+	table_sort(list)
 	frec.g[1], frec.c[1] = list[1], 1
 	
 	for i=2, #list do
@@ -76,88 +78,102 @@ frecuencyF = function(array)
 		end
 	end
 	return frec
-end,
+end
 
-normalVA = function (mu, sig)
+local function normalVA(mu, sig)
 	-- normal standar: mu=0,sig=1
 	-- method schmeiser
-	local st = require(dirLuaStat) -- auto reference
-	local mu, sig, r = mu or 0, sig or 1, st.rand()
+	local mu, sig, r = mu or 0, sig or 1, rand()
 	local z = (r^0.135 - (1-r)^0.135)/0.1975
 	return z*sig + mu
-end,
+end
 
-normal_inv_D = function (p, mu, sig)
+local function normal_inv_D(p, mu, sig)
 	-- nomal standar mu=0,sig=1, p~[0,1]: (probability)
 	-- method schmeiser
 	local mu, sig, p = mu or 0, sig or 1, p or 0.5 -- 'p' parameter fixed
 	local z = (p^0.135 - (1-p)^0.135)/0.1975
 	return z*sig + mu
-end,
+end
 
-bernoulliVA = function (p) local st = require(dirLuaStat) if st.rand()<= p then return 1 else return 0 end end,
-unifVA = function (min,max) local st = require(dirLuaStat); return (max-min)*st.rand() + min end,
-expoVA = function (beta) local st = require(dirLuaStat); return (-1/beta)*st.ln(st.rand()) end,
-weibullVA = function (alpha,beta) local st = require(dirLuaStat); return alpha*(-st.ln(st.rand()))^(1/beta) end,
+local function bernoulliVA(p)
+	if rand()<= p then
+		return 1
+	else
+		return 0
+	end
+end
 
-erlangVA = function(n, lambda)
-	local st = require(dirLuaStat)	-- auto reference
+local function unifVA(min,max)
+	return (max-min)*rand() + min
+end
+
+local function expoVA(beta) 
+	return (-1/beta)*ln(rand())
+end
+
+local function weibullVA(alpha,beta)
+	return alpha*(-ln(rand()))^(1/beta)
+end
+
+local function erlangVA(n, lambda)
 	local VaErlang = 0
-	for i=1, n do VaErlang = VaErlang + st.expoVA(lambda) end
+	for i=1, n do
+		VaErlang = VaErlang + expoVA(lambda)
+	end
 	return VaErlang
-end,
+end
 	
-trianVA = function(a,b,c)
-	local st = require(dirLuaStat)	-- auto reference
+local function trianVA(a,b,c)
 	local a,b,c = a or 1, b or 2, c or 3
-	if st.rand() <= (b-a)/(c-1) then
+	if rand() <= (b-a)/(c-1) then
 		return a + ((b-a)*(c-a)*r)^0.5
 	else
 		return c - ((c-b)*(c-a)*(1-r))^0.5
 	end
-end,
+end
 
-binomialVA = function(n,p)
-	local st = require(dirLuaStat) -- auto reference
+local function binomialVA(n,p)
 	local n, p , va = n or 1, p or 0.5, 0
 	-- convolution method
-	for i=1,n do va=va+st.bernoulliVA(p) end
+	for i=1,n do va=va+bernoulliVA(p) end
 	return va
-end,
+end
 
-poissonVA = function(lamba)
-	local st = require(dirLuaStat) -- auto reference
+local function poissonVA(lamba)
 	local t, va, lamba = 0, 0, lamba or 0.5
 	-- convolution method
 	while true do
-		t = t+st.expoVA(1/lamba)
-		if t <= 1 then va = va + 1 else break end
+		t = t+expoVA(1/lamba)
+		if t <= 1 then
+			va = va + 1
+		else
+			break
+		end
 	end
 	return va
-end,
+end
 
-geometricVA = function (p)
+local function geometricVA(p)
 	--[[
 		------------------------------------------------------------
 		-- See details in:
 		-- https://math.stackexchange.com/questions/485448/prove-the-way-to-generate-geometrically-distributed-random-numbers
 		------------------------------------------------------------
 	]]
-	local st = require(dirLuaStat) -- auto reference
-	local U = st.rand()
-	local va = st.ln(U)/st.ln(1-p)
+	local U = rand()
+	local va = ln(U)/ln(1-p)
 	return va
-end,
+end
 
 	
-chiSquareVA = function(n)
-	local st = require(dirLuaStat) -- auto reference
+local function chiSquareVA(n)
 	local va = 0
-	for i=1, n do va = va + st.normalVA() end
+	for i=1, n do va = va + normalVA() end
 	return va^0.5
-end,
+end
 
-gamVA = function(alpha, lamba)
+local function gamVA(alpha, lamba)
 	--[[
 		------------------------------------------------------------
 		-- generator using Marsaglia and Tsang method
@@ -166,18 +182,17 @@ gamVA = function(alpha, lamba)
 		-- http://www.ijcse.com/docs/INDJCSE14-05-06-048.pdf
 		------------------------------------------------------------
 	]]
-	local st = requiere(dirLuaStat) -- auto reference
 	local alpha, lamba = alpha or 0.5, lamba or 0.5
 	local va=0
 	if alpha >= 1 then
 		local d=alpha-1/3
 		local c=1/(9*d)^.5
 		while (true) do
-			local Z=st.normalVA()
+			local Z=normalVA()
 			if Z>-1/c then
 				local V=(1+c*Z)^3
-				local U=st.rand()
-				if st.ln(U)<0.5*Z^2+d-d*V+d*st.ln(V) then
+				local U=rand()
+				if ln(U)<0.5*Z^2+d-d*V+d*ln(V) then
 					va=d*V/lamba
 					break
 				end
@@ -185,13 +200,13 @@ gamVA = function(alpha, lamba)
 		end
 		
 	elseif alpha>0 and alpha<1 then
-		va=st.gamVA(alpha+1,lamba)
-		va=va*st.rand()^(1/alpha)
+		va=gamVA(alpha+1,lamba)
+		va=va*rand()^(1/alpha)
 	else print("alpha must be > 0") end
 	return va
-end,
+end
 
-lognoVA = function(m, s)
+local function lognoVA(m, s)
 	--[[
 		------------------------------------------------------------
 		-- Took
@@ -200,13 +215,32 @@ lognoVA = function(m, s)
 		-- http://blogs.sas.com/content/iml/2014/06/04/simulate-lognormal-data-with-specified-mean-and-variance.html
 		------------------------------------------------------------
 	]]
-	local st = require(dirLuaStat) -- auto reference
 	local m, s = m or 0, s or 1
 	-- Next step is to scale the mean and standard deviation
-	local mean = st.ln( m^2 / st.sqrt( m^2 + s^2 ))
-	local sd = st.sqrt( st.ln(( m^2 + s^2 ) / m^2 ))
+	local mean = ln( m^2 / sqrt( m^2 + s^2 ))
+	local sd = sqrt( ln(( m^2 + s^2 ) / m^2 ))
 	
-	local x = st.normal_inv_D(st.rand, mean, sd)
-	return st.exp(x)
-end,
+	local x = normal_inv_D(rand, mean, sd)
+	return exp(x)
+end
+
+return {
+	sumF=sumF,
+	avF=avF,
+	stvF=stvF,
+	frecuencyF=frecuencyF,
+	nomalVA=nomalVA,
+	normal_inv_D=normal_inv_D,
+	bernoulliVA=bernoulliVA,
+	unifVA=unifVA,
+	expoVA=expoVA,
+	weibullVA=weibullVA,
+	erlangVA=erlangVA,
+	trianVA=trianVA,
+	binomialVA=binomialVA,
+	geometricVA=geometricVA,
+	poissonVA=poissonVA,
+	chiSquareVA=chiSquareVA,
+	gamVA=gamVA,
+	lognoRandVA=lognoRandVA,
 }
