@@ -220,7 +220,7 @@ local function lognoVA(m, s)
 	local mean = ln( m^2 / sqrt( m^2 + s^2 ))
 	local sd = sqrt( ln(( m^2 + s^2 ) / m^2 ))
 	
-	local x = normal_inv_D(rand, mean, sd)
+	local x = normal_inv_D(rand(), mean, sd)
 	return exp(x)
 end
 
@@ -242,5 +242,5 @@ return {
 	poissonVA=poissonVA,
 	chiSquareVA=chiSquareVA,
 	gamVA=gamVA,
-	lognoRandVA=lognoRandVA,
+	lognoRandVA=lognoVA,
 }
