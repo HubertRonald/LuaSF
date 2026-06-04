@@ -21,12 +21,14 @@ Phase 1 compatibility notes:
 
 local M = {}
 
-local rand = math.random
+local default_rand = math.random
+local rand = default_rand
 local randomseed = math.randomseed
 local ln = math.log
 local sqrt = math.sqrt
 local exp = math.exp
 local floor = math.floor
+local ceil = math.ceil
 local ipairs = ipairs
 local table_sort = table.sort
 local os_time = os.time
@@ -61,18 +63,34 @@ local function seed(value)
   randomseed(value or os_time())
 end
 
+local function set_rng(rng_function)
+  assert(type(rng_function) == "function", "rng_function must be a function")
+  rand = rng_function
+end
+
+local function reset_rng()
+  rand = default_rand
+end
+
 -- Legacy-compatible integer/random helper.
 -- Supports:
 --   rand()
 --   rand(max)
 --   rand(min, max)
 local function randF(a, b)
+  local r = rand()
+
   if a == nil and b == nil then
-    return rand()
+    return r
   elseif b == nil then
-    return rand(a)
+    assert_number(a, "max")
+    assert(a >= 1, "max must be greater than or equal to 1")
+    return floor(r * a) + 1
   else
-    return rand(a, b)
+    assert_number(a, "min")
+    assert_number(b, "max")
+    assert(b >= a, "max must be greater than or equal to min")
+    return floor(r * (b - a + 1)) + a
   end
 end
 
@@ -108,6 +126,93 @@ local function stvF(array)
   end
 
   return sqrt(squared_sum / (#array - 1))
+end
+
+local function variance(array)
+  assert_non_empty_array(array)
+  assert(#array >= 2, "array must contain at least two values")
+
+  local average = avF(array)
+  local squared_sum = 0
+
+  for _, value in ipairs(array) do
+    assert_number(value, "array value")
+    squared_sum = squared_sum + (value - average) ^ 2
+  end
+
+  return squared_sum / (#array - 1)
+end
+
+local function min_value(array)
+  assert_non_empty_array(array)
+
+  local current_min = array[1]
+  assert_number(current_min, "array value")
+
+  for i = 2, #array do
+    assert_number(array[i], "array value")
+    if array[i] < current_min then
+      current_min = array[i]
+    end
+  end
+
+  return current_min
+end
+
+local function max_value(array)
+  assert_non_empty_array(array)
+
+  local current_max = array[1]
+  assert_number(current_max, "array value")
+
+  for i = 2, #array do
+    assert_number(array[i], "array value")
+    if array[i] > current_max then
+      current_max = array[i]
+    end
+  end
+
+  return current_max
+end
+
+local function copy_array(array)
+  assert_non_empty_array(array)
+
+  local copied = {}
+
+  for i = 1, #array do
+    copied[i] = array[i]
+  end
+
+  return copied
+end
+
+local function quantile(array, q)
+  assert_non_empty_array(array)
+  assert_number(q, "q")
+  assert(q >= 0 and q <= 1, "q must be between 0 and 1")
+
+  local list = copy_array(array)
+  table_sort(list)
+
+  if #list == 1 then
+    return list[1]
+  end
+
+  local position = 1 + (#list - 1) * q
+  local lower_index = floor(position)
+  local upper_index = ceil(position)
+
+  if lower_index == upper_index then
+    return list[lower_index]
+  end
+
+  local weight = position - lower_index
+  return list[lower_index] * (1 - weight) + list[upper_index] * weight
+end
+
+local function median(array)
+  return quantile(array, 0.5)
 end
 
 -- Frequency distribution.
@@ -390,6 +495,67 @@ local function lognoVA(m, s)
   return exp(normalVA(mean, sd))
 end
 
+local function choice(array)
+  assert_non_empty_array(array)
+  return array[randF(1, #array)]
+end
+
+local function shuffle(array)
+  local shuffled = copy_array(array)
+
+  for i = #shuffled, 2, -1 do
+    local j = randF(1, i)
+    shuffled[i], shuffled[j] = shuffled[j], shuffled[i]
+  end
+
+  return shuffled
+end
+
+local function sample(array, n)
+  assert_non_empty_array(array)
+  assert_number(n, "n")
+  assert(n >= 0, "n must be greater than or equal to 0")
+  assert(n <= #array, "n must be less than or equal to array length")
+
+  local shuffled = shuffle(array)
+  local result = {}
+
+  for i = 1, floor(n) do
+    result[i] = shuffled[i]
+  end
+
+  return result
+end
+
+local function weighted_choice(items, weights)
+  assert_non_empty_array(items, "items")
+  assert_non_empty_array(weights, "weights")
+  assert(#items == #weights, "items and weights must have the same length")
+
+  local total_weight = 0
+
+  for _, weight in ipairs(weights) do
+    assert_number(weight, "weight")
+    assert(weight >= 0, "weights must be greater than or equal to 0")
+    total_weight = total_weight + weight
+  end
+
+  assert(total_weight > 0, "total weight must be greater than 0")
+
+  local threshold = rand() * total_weight
+  local cumulative = 0
+
+  for i = 1, #items do
+    cumulative = cumulative + weights[i]
+
+    if threshold <= cumulative then
+      return items[i]
+    end
+  end
+
+  return items[#items]
+end
+
 -- Legacy/public API
 M.rand = randF
 M.sumF = sumF
@@ -434,5 +600,19 @@ M.poisson = poissonVA
 M.chi_square = chiSquareVA
 M.gamma = gamVA
 M.lognormal = lognoVA
+
+M.set_rng = set_rng
+M.reset_rng = reset_rng
+
+M.variance = variance
+M.median = median
+M.min = min_value
+M.max = max_value
+M.quantile = quantile
+
+M.choice = choice
+M.shuffle = shuffle
+M.sample = sample
+M.weighted_choice = weighted_choice
 
 return M
