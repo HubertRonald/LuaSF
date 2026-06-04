@@ -1,3 +1,5 @@
+# LuaSF: Lua Statistics Functions
+
 <p align="left">
     <a href="https://www.lua.org/" target="_blank">
         <img src="https://img.shields.io/badge/Lua-5.1%2B-2C2D72?style=flat-square&logo=lua&logoColor=white" alt="Lua 5.1+" />
@@ -27,25 +29,24 @@
     <img src="https://img.shields.io/badge/pure%20Lua-no%20native%20deps-blueviolet?style=flat-square" alt="Pure Lua" />
 </p>
 
-# LuaSF: Lua Statistics Functions
-
 **LuaSF** stands for **Lua Statistics Functions**.
 
-LuaSF is a small, lightweight, pure-Lua library for basic descriptive statistics and pseudo-random variable generation.
+LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, sampling utilities, and pseudo-random variable generation.
 
-The project started around 2014 and was later published under the MIT License. It is now being revived with compatibility improvements, tests, examples, documentation, and a cleaner module structure while preserving the existing public API.
+The project started around 2014 and was later published under the MIT License. It has been revived with compatibility improvements, tests, examples, documentation, a cleaner module structure, and new statistics/sampling helpers while preserving the existing public API.
 
 ---
 
-## Features
+## Why LuaSF?
 
 * Pure Lua implementation
 * No native dependencies
-* Basic descriptive statistics
-* Discrete and continuous pseudo-random variables
 * Single-file friendly
+* Basic descriptive statistics
+* Sampling utilities
+* Discrete and continuous pseudo-random variables
 * Compatible with the existing public LuaSF API
-* Suitable for simulations, teaching, small scripts, game/mod scripting, and lightweight statistical utilities
+* Useful for simulations, teaching, small scripts, game/mod scripting, and lightweight statistical utilities
 
 ---
 
@@ -67,17 +68,21 @@ Older examples may use:
 local stats = require("LuaStat")
 ```
 
-This is still supported for compatibility.
+This remains supported for compatibility.
 
 ### Option 3: Use the source module directly
 
-During development, you can also load the implementation from `src/`:
+During development, load the implementation from `src/`:
 
 ```lua
 local stats = require("src.luasf")
 ```
 
-After LuaRocks packaging is completed, the preferred package-style usage will be:
+### Option 4: LuaRocks
+
+LuaRocks packaging is planned.
+
+After publishing, the preferred package-style usage will be:
 
 ```lua
 local stats = require("luasf")
@@ -104,9 +109,11 @@ local stats = require("LuaSF")
 
 local values = {1, 2, 3, 4, 5}
 
-print(stats.sum(values))    -- 15
-print(stats.mean(values))   -- 3
-print(stats.stddev(values)) -- sample standard deviation
+print(stats.sum(values))      -- 15
+print(stats.mean(values))     -- 3
+print(stats.stddev(values))   -- sample standard deviation
+print(stats.median(values))   -- 3
+print(stats.variance(values)) -- sample variance
 ```
 
 ---
@@ -122,9 +129,28 @@ print(stats.stddev(values)) -- sample standard deviation
 | `stvF(array)`       | `stddev(array)`    | Sample standard deviation using `n - 1` |
 | `frecuencyF(array)` | `frequency(array)` | Frequency distribution                  |
 
-> Note: `frecuencyF` keeps the original spelling for backward compatibility.
+> `frecuencyF` keeps the original spelling for backward compatibility.
 
----
+### Additional descriptive statistics
+
+| Function             | Description                         |
+| -------------------- | ----------------------------------- |
+| `variance(array)`    | Sample variance using `n - 1`       |
+| `median(array)`      | Median value                        |
+| `min(array)`         | Minimum value                       |
+| `max(array)`         | Maximum value                       |
+| `quantile(array, q)` | Quantile using linear interpolation |
+
+### Sampling utilities
+
+| Function                          | Description                                    |
+| --------------------------------- | ---------------------------------------------- |
+| `choice(array)`                   | Returns one random item from an array          |
+| `shuffle(array)`                  | Returns a shuffled copy of an array            |
+| `sample(array, n)`                | Returns `n` random items without replacement   |
+| `weighted_choice(items, weights)` | Returns one random item using weights          |
+| `set_rng(rng_function)`           | Sets a custom random number generator          |
+| `reset_rng()`                     | Restores Lua's default random number generator |
 
 ### Random variables and distributions
 
@@ -147,29 +173,7 @@ print(stats.stddev(values)) -- sample standard deviation
 | `lognoVA(m, s)`            | `lognormal(m, s)`            | Log-normal random variable       |
 | `lognoRandVA(m, s)`        | `lognormal(m, s)`            | Log-normal random variable       |
 
-> Note: `nomalVA` and `lognoRandVA` are preserved as compatibility aliases.
-
-
-### Additional descriptive statistics
-
-| Function | Description |
-|---|---|
-| `variance(array)` | Sample variance using `n - 1` |
-| `median(array)` | Median value |
-| `min(array)` | Minimum value |
-| `max(array)` | Maximum value |
-| `quantile(array, q)` | Quantile using linear interpolation |
-
-### Sampling utilities
-
-| Function | Description |
-|---|---|
-| `choice(array)` | Returns one random item from an array |
-| `shuffle(array)` | Returns a shuffled copy of an array |
-| `sample(array, n)` | Returns `n` random items without replacement |
-| `weighted_choice(items, weights)` | Returns one random item using weights |
-| `set_rng(rng_function)` | Sets a custom random number generator |
-| `reset_rng()` | Restores Lua's default random number generator |
+> `nomalVA` and `lognoRandVA` are preserved as compatibility aliases.
 
 ---
 
@@ -193,8 +197,6 @@ for i = 1, #frequencies.c do
 end
 ```
 
----
-
 ### Normal distribution quality control sample
 
 ```lua
@@ -213,7 +215,7 @@ Expected output:
 1.9688213737864
 ```
 
-### Random Choice sample
+### Random choice and sampling
 
 ```lua
 local stats = require("LuaSF")
@@ -229,6 +231,17 @@ for i = 1, #selected do
 end
 ```
 
+### Weighted choice
+
+```lua
+local stats = require("LuaSF")
+
+local items = {"low", "medium", "high"}
+local weights = {1, 2, 7}
+
+print(stats.weighted_choice(items, weights))
+```
+
 ---
 
 ## Project structure
@@ -240,12 +253,17 @@ LuaSF/
   spec/
     test_stats.lua
     test_distributions.lua
+    test_sampling.lua
   examples/
     dice_simulation.lua
     normal_quality_control.lua
     gamma_distribution.lua
   docs/
     api.md
+  .github/
+    workflows/
+      ci.yml
+      publish-luarocks.yml
   LuaSF.lua
   LuaStat.lua
   README.md
@@ -253,6 +271,7 @@ LuaSF/
   CONTRIBUTING.md
   LICENSE
   luasf-0.2.0-1.rockspec
+  luasf-0.3.0-1.rockspec
 ```
 
 ---
@@ -271,6 +290,7 @@ Run tests:
 ```bash
 lua spec/test_stats.lua
 lua spec/test_distributions.lua
+lua spec/test_sampling.lua
 ```
 
 ---
@@ -287,25 +307,26 @@ lua examples/gamma_distribution.lua
 
 ## Roadmap
 
-### Phase 1 — Compatibility stabilization
+### Completed
 
-* Preserve the current public API
-* Add compatibility module entry points
-* Fix broken exports
-* Fix obvious random variable issues
-* Add smoke tests
-* Add examples
-* Add initial API documentation
-* Prepare LuaRocks packaging
+* Compatibility-safe project revival
+* Cleaner module structure
+* Legacy API preservation
+* Modern aliases
+* Basic tests
+* Examples
+* API documentation
+* Additional statistics helpers
+* Sampling utilities
+* Deterministic simulation support
 
-### Future phases
+### Planned
 
-* Improve documentation
-* Add more examples
-* Add continuous integration
-* Publish a tagged release
-* Publish to LuaRocks
-* Add additional statistical helpers
+* Manual GitHub Actions CI
+* LuaRocks package validation
+* LuaRocks publishing
+* More examples
+* More statistical helpers
 
 ---
 
@@ -315,11 +336,14 @@ lua examples/gamma_distribution.lua
 
 GitHub: [HubertRonald](https://github.com/HubertRonald)
 
+---
+
 ## Contributors
 
 Thanks to the contributors who have helped improve LuaSF.
 
 See the full list of contributors on GitHub:
+
 [LuaSF contributors](https://github.com/HubertRonald/LuaSF/graphs/contributors?all=1)
 
 ---
