@@ -33,6 +33,20 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ---
 
+### Added
+
+- Added `variance(array)`.
+- Added `median(array)`.
+- Added `min(array)` and `max(array)`.
+- Added `quantile(array, q)`.
+- Added `choice(array)`.
+- Added `shuffle(array)`.
+- Added `sample(array, n)`.
+- Added `weighted_choice(items, weights)`.
+- Added `set_rng(rng_function)` and `reset_rng()`.
+- Added sampling tests.
+
+
 ## [0.2.0] - Planned
 
 ### Added
