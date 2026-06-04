@@ -44,6 +44,7 @@ The project started around 2014 and was later published under the MIT License. I
 * Lua 5.1+ friendly
 * Single-file friendly
 * Basic descriptive statistics
+* Summary statistics helpers
 * Sampling utilities
 * Discrete and continuous pseudo-random variables
 * Compatible with the existing public LuaSF API
@@ -107,6 +108,7 @@ print(stats.mean(values))     -- 3
 print(stats.stddev(values))   -- sample standard deviation
 print(stats.median(values))   -- 3
 print(stats.variance(values)) -- sample variance
+print(stats.summary(values).count) -- 5
 ```
 
 Legacy names are still available:
@@ -138,13 +140,18 @@ print(stats.stvF(values)) -- sample standard deviation
 
 ### Additional descriptive statistics
 
-| Function             | Description                         |
-| -------------------- | ----------------------------------- |
-| `variance(array)`    | Sample variance using `n - 1`       |
-| `median(array)`      | Median value                        |
-| `min(array)`         | Minimum value                       |
-| `max(array)`         | Maximum value                       |
-| `quantile(array, q)` | Quantile using linear interpolation |
+| Function               | Description                                                            |
+| ---------------------- | ---------------------------------------------------------------------- |
+| `variance(array)`      | Sample variance using `n - 1`                                          |
+| `median(array)`        | Median value                                                           |
+| `min(array)`           | Minimum value                                                          |
+| `max(array)`           | Maximum value                                                          |
+| `quantile(array, q)`   | Quantile using linear interpolation                                    |
+| `mode(array)`          | Most frequent value                                                    |
+| `range(array)`         | Difference between maximum and minimum                                 |
+| `iqr(array)`           | Interquartile range                                                    |
+| `percentile(array, p)` | Percentile where `p` is between `0` and `100`                          |
+| `summary(array)`       | Summary table with count, min, max, mean, median, variance, and stddev |
 
 ### Sampling utilities
 
@@ -200,6 +207,23 @@ local frequencies = stats.frequency(rolls)
 for i = 1, #frequencies.counts do
   print("Frequency - Sum Number:", frequencies.values[i], frequencies.counts[i])
 end
+```
+
+### Summary statistics
+
+```lua
+local stats = require("luasf")
+
+local values = {10, 12, 14, 15, 18, 20}
+local result = stats.summary(values)
+
+print("Count:", result.count)
+print("Min:", result.min)
+print("Max:", result.max)
+print("Mean:", result.mean)
+print("Median:", result.median)
+print("Variance:", result.variance)
+print("Stddev:", result.stddev)
 ```
 
 ### Normal distribution quality control sample
@@ -277,6 +301,11 @@ LuaSF/
     dice_simulation.lua
     normal_quality_control.lua
     gamma_distribution.lua
+    weighted_loot_drop.lua
+    monte_carlo_pi.lua
+    poisson_arrivals.lua
+    binomial_coin_flips.lua
+    bootstrap_mean.lua
   docs/
     api.md
   .github/
@@ -320,6 +349,11 @@ lua spec/test_sampling.lua
 lua examples/dice_simulation.lua
 lua examples/normal_quality_control.lua
 lua examples/gamma_distribution.lua
+lua examples/weighted_loot_drop.lua
+lua examples/monte_carlo_pi.lua
+lua examples/poisson_arrivals.lua
+lua examples/binomial_coin_flips.lua
+lua examples/bootstrap_mean.lua
 ```
 
 ---
@@ -342,11 +376,12 @@ lua examples/gamma_distribution.lua
 
 ### Planned
 
-* Manual GitHub Actions CI
-* LuaRocks package validation workflow
+* Improve GitHub Actions CI with optional automatic checks for pull requests
+* Improve LuaRocks validation and publishing workflows
 * More examples
 * More statistical helpers
-* Optional documentation generation
+* Lightweight cross-reference with LuaHMF
+* Future combinatorics helpers such as `factorial`, `combinations`, and `permutations`
 
 ---
 

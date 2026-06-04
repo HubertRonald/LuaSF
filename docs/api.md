@@ -195,6 +195,101 @@ print(stats.quantile({1, 2, 3, 4, 5}, 0.5)) -- 3
 
 ---
 
+### `mode(array)`
+
+Returns the most frequent value in an array.
+
+If multiple values have the same frequency, LuaSF returns the first mode found after sorting the values.
+
+```lua
+local stats = require("luasf")
+
+print(stats.mode({1, 2, 2, 3})) -- 2
+```
+
+---
+
+### `range(array)`
+
+Returns the difference between the maximum and minimum values.
+
+```lua
+local stats = require("luasf")
+
+print(stats.range({3, 1, 10, 2})) -- 9
+```
+
+---
+
+### `iqr(array)`
+
+Returns the interquartile range.
+
+It is calculated as:
+
+```text
+quantile(array, 0.75) - quantile(array, 0.25)
+```
+
+Example:
+
+```lua
+local stats = require("luasf")
+
+print(stats.iqr({1, 2, 3, 4, 5})) -- 2
+```
+
+---
+
+### `percentile(array, p)`
+
+Returns the `p` percentile.
+
+`p` must be between `0` and `100`.
+
+```lua
+local stats = require("luasf")
+
+print(stats.percentile({1, 2, 3, 4, 5}, 50)) -- 3
+```
+
+---
+
+### `summary(array)`
+
+Returns a summary table with common descriptive statistics.
+
+The returned table includes:
+
+```lua
+{
+  count = number,
+  min = number,
+  max = number,
+  mean = number,
+  median = number,
+  variance = number or nil,
+  stddev = number or nil
+}
+```
+
+Example:
+
+```lua
+local stats = require("luasf")
+
+local result = stats.summary({1, 2, 3, 4, 5})
+
+print(result.count)    -- 5
+print(result.min)      -- 1
+print(result.max)      -- 5
+print(result.mean)     -- 3
+print(result.median)   -- 3
+print(result.variance) -- 2.5
+```
+
+---
+
 ## Sampling utilities
 
 ### `choice(array)`
@@ -673,6 +768,11 @@ stats.median
 stats.min
 stats.max
 stats.quantile
+stats.mode
+stats.range
+stats.iqr
+stats.percentile
+stats.summary
 stats.choice
 stats.shuffle
 stats.sample
