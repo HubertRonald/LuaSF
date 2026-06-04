@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Lua ${{ matrix.lua-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        lua-version:
+          - "5.1.5"
+          - "5.2.4"
+          - "5.3.6"
+          - "5.4.8"
+          - "luajit-2.1"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Lua
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: ${{ matrix.lua-version }}
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v6
+
+      - name: Install test dependencies
+        run: luarocks install luaunit
+
+      - name: Run tests
+        run: |
+          lua spec/test_stats.lua
+          lua spec/test_distributions.lua
+          lua spec/test_sampling.lua
+
+      - name: Run examples
+        run: |
+          lua examples/dice_simulation.lua
+          lua examples/normal_quality_control.lua
+          lua examples/gamma_distribution.lua
