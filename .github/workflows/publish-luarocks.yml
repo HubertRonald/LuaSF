@@ -1,0 +1,36 @@
+name: Publish to LuaRocks
+
+on:
+  workflow_dispatch:
+    inputs:
+      rockspec:
+        description: "Rockspec file to validate"
+        required: true
+        default: "luasf-0.3.0-1.rockspec"
+
+jobs:
+  validate:
+    name: Validate rockspec
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Lua
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: "5.4.8"
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v6
+
+      - name: Validate rockspec
+        run: luarocks lint "${{ github.event.inputs.rockspec }}"
+
+      - name: Build rock locally
+        run: luarocks make "${{ github.event.inputs.rockspec }}"
+
+      # Enable this step only after validation works.
+      # - name: Upload to LuaRocks
+      #   run: luarocks upload "${{ github.event.inputs.rockspec }}" --api-key="${{ secrets.LUAROCKS_API_KEY }}"
