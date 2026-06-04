@@ -255,6 +255,60 @@ local function frecuencyF(array)
   }
 end
 
+local function mode(array)
+  assert_non_empty_array(array)
+
+  local freq = frecuencyF(array)
+  local best_value = freq.g[1]
+  local best_count = freq.c[1]
+
+  for i = 2, #freq.g do
+    if freq.c[i] > best_count then
+      best_value = freq.g[i]
+      best_count = freq.c[i]
+    end
+  end
+
+  return best_value
+end
+
+local function range_value(array)
+  return max_value(array) - min_value(array)
+end
+
+local function iqr(array)
+  return quantile(array, 0.75) - quantile(array, 0.25)
+end
+
+local function percentile(array, p)
+  assert_number(p, "p")
+  assert(p >= 0 and p <= 100, "p must be between 0 and 100")
+
+  return quantile(array, p / 100)
+end
+
+local function summary(array)
+  assert_non_empty_array(array)
+
+  local result = {
+    count = #array,
+    min = min_value(array),
+    max = max_value(array),
+    mean = avF(array),
+    median = median(array)
+  }
+
+  if #array >= 2 then
+    result.variance = variance(array)
+    result.stddev = stvF(array)
+  else
+    result.variance = nil
+    result.stddev = nil
+  end
+
+  return result
+end
+
 -- Normal random variable.
 -- Original approximation method kept for compatibility.
 local function normalVA(mu, sig)
@@ -586,6 +640,13 @@ M.sum = sumF
 M.mean = avF
 M.stddev = stvF
 M.frequency = frecuencyF
+
+M.mode = mode
+M.range = range_value
+M.iqr = iqr
+M.percentile = percentile
+M.summary = summary
+
 M.normal = normalVA
 M.inverse_normal = normal_inv_D
 M.bernoulli = bernoulliVA
