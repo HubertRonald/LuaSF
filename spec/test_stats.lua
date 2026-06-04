@@ -50,4 +50,28 @@ function TestStats:test_module_entry_points()
   luaunit.assertEquals(type(luasf_src), "table")
 end
 
+function TestStats:test_variance()
+  luaunit.assertAlmostEquals(stats.variance({2, 4, 6}), 4, 0.000001)
+end
+
+function TestStats:test_median_odd_length()
+  luaunit.assertEquals(stats.median({3, 1, 2}), 2)
+end
+
+function TestStats:test_median_even_length()
+  luaunit.assertEquals(stats.median({4, 1, 2, 3}), 2.5)
+end
+
+function TestStats:test_min()
+  luaunit.assertEquals(stats.min({3, 1, 2}), 1)
+end
+
+function TestStats:test_max()
+  luaunit.assertEquals(stats.max({3, 1, 2}), 3)
+end
+
+function TestStats:test_quantile()
+  luaunit.assertEquals(stats.quantile({1, 2, 3, 4, 5}, 0.5), 3)
+end
+
 os.exit(luaunit.LuaUnit.run())
