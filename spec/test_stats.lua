@@ -74,4 +74,31 @@ function TestStats:test_quantile()
   luaunit.assertEquals(stats.quantile({1, 2, 3, 4, 5}, 0.5), 3)
 end
 
+function TestStats:test_mode()
+  luaunit.assertEquals(stats.mode({1, 2, 2, 3}), 2)
+end
+
+function TestStats:test_range()
+  luaunit.assertEquals(stats.range({3, 1, 10, 2}), 9)
+end
+
+function TestStats:test_iqr()
+  luaunit.assertEquals(stats.iqr({1, 2, 3, 4, 5}), 2)
+end
+
+function TestStats:test_percentile()
+  luaunit.assertEquals(stats.percentile({1, 2, 3, 4, 5}, 50), 3)
+end
+
+function TestStats:test_summary()
+  local result = stats.summary({1, 2, 3, 4, 5})
+
+  luaunit.assertEquals(result.count, 5)
+  luaunit.assertEquals(result.min, 1)
+  luaunit.assertEquals(result.max, 5)
+  luaunit.assertEquals(result.mean, 3)
+  luaunit.assertEquals(result.median, 3)
+  luaunit.assertAlmostEquals(result.variance, 2.5, 0.000001)
+end
+
 os.exit(luaunit.LuaUnit.run())
