@@ -4,8 +4,8 @@
     <a href="https://www.lua.org/" target="_blank">
         <img src="https://img.shields.io/badge/Lua-5.1%2B-2C2D72?style=flat-square&logo=lua&logoColor=white" alt="Lua 5.1+" />
     </a>
-    <a href="https://luarocks.org/" target="_blank">
-        <img src="https://img.shields.io/badge/LuaRocks-planned-lightgrey?style=flat-square&logo=lua&logoColor=white" alt="LuaRocks planned" />
+    <a href="https://luarocks.org/modules/HubertRonald/luasf" target="_blank">
+        <img src="https://img.shields.io/badge/LuaRocks-published-0B63CE?style=flat-square&logo=lua&logoColor=white" alt="LuaRocks published" />
     </a>
     <a href="https://github.com/HubertRonald/LuaSF/blob/master/LICENSE" target="_blank">
         <img src="https://img.shields.io/badge/license-MIT-success?style=flat-square" alt="MIT License" />
@@ -25,18 +25,15 @@
     <a href="https://github.com/HubertRonald/LuaSF/pulls" target="_blank">
         <img src="https://img.shields.io/badge/pull%20requests-open-yellow?style=flat-square&logo=github" alt="GitHub pull requests" />
     </a>
-    <img src="https://img.shields.io/badge/status-revival%20phase-orange?style=flat-square" alt="Project status" />
+    <img src="https://img.shields.io/badge/status-active-brightgreen?style=flat-square" alt="Project status" />
     <img src="https://img.shields.io/badge/pure%20Lua-no%20native%20deps-blueviolet?style=flat-square" alt="Pure Lua" />
-    <a href="https://luarocks.org/modules/HubertRonald/luasf" target="_blank">
-        <img src="https://img.shields.io/badge/LuaRocks-published-0B63CE?style=flat-square&logo=lua&logoColor=white" alt="LuaRocks published" />
-    </a>
 </p>
 
 **LuaSF** stands for **Lua Statistics Functions**.
 
 LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, sampling utilities, and pseudo-random variable generation.
 
-The project started around 2014 and was later published under the MIT License. It has been revived with compatibility improvements, tests, examples, documentation, a cleaner module structure, and new statistics/sampling helpers while preserving the existing public API.
+The project started around 2014 and was later published under the MIT License. It has now been revived with compatibility improvements, tests, examples, documentation, a cleaner module structure, additional statistics helpers, sampling utilities, and LuaRocks packaging while preserving the existing public API.
 
 ---
 
@@ -44,6 +41,7 @@ The project started around 2014 and was later published under the MIT License. I
 
 * Pure Lua implementation
 * No native dependencies
+* Lua 5.1+ friendly
 * Single-file friendly
 * Basic descriptive statistics
 * Sampling utilities
@@ -55,7 +53,21 @@ The project started around 2014 and was later published under the MIT License. I
 
 ## Installation
 
-### Option 1: Copy the file
+### Option 1: LuaRocks
+
+```bash
+luarocks install luasf
+```
+
+Then use:
+
+```lua
+local stats = require("luasf")
+
+print(stats.sum({1, 2, 3})) -- 6
+```
+
+### Option 2: Copy the file
 
 Copy `LuaSF.lua` into your project and load it with:
 
@@ -63,7 +75,7 @@ Copy `LuaSF.lua` into your project and load it with:
 local stats = require("LuaSF")
 ```
 
-### Option 2: Use the compatibility entry point
+### Option 3: Use the compatibility entry point
 
 Older examples may use:
 
@@ -73,7 +85,7 @@ local stats = require("LuaStat")
 
 This remains supported for compatibility.
 
-### Option 3: Use the source module directly
+### Option 4: Use the source module directly
 
 During development, load the implementation from `src/`:
 
@@ -81,19 +93,23 @@ During development, load the implementation from `src/`:
 local stats = require("src.luasf")
 ```
 
-### Option 4: LuaRocks
-
-LuaRocks packaging is planned.
-
-After publishing, the preferred package-style usage will be:
-
-```lua
-local stats = require("luasf")
-```
-
 ---
 
 ## Quick start
+
+```lua
+local stats = require("luasf")
+
+local values = {1, 2, 3, 4, 5}
+
+print(stats.sum(values))      -- 15
+print(stats.mean(values))     -- 3
+print(stats.stddev(values))   -- sample standard deviation
+print(stats.median(values))   -- 3
+print(stats.variance(values)) -- sample variance
+```
+
+Legacy names are still available:
 
 ```lua
 local stats = require("LuaSF")
@@ -103,20 +119,6 @@ local values = {1, 2, 3, 4, 5}
 print(stats.sumF(values)) -- 15
 print(stats.avF(values))  -- 3
 print(stats.stvF(values)) -- sample standard deviation
-```
-
-Modern aliases are also available:
-
-```lua
-local stats = require("LuaSF")
-
-local values = {1, 2, 3, 4, 5}
-
-print(stats.sum(values))      -- 15
-print(stats.mean(values))     -- 3
-print(stats.stddev(values))   -- sample standard deviation
-print(stats.median(values))   -- 3
-print(stats.variance(values)) -- sample variance
 ```
 
 ---
@@ -185,7 +187,7 @@ print(stats.variance(values)) -- sample variance
 ### Twice two dice simulation
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local rolls = {}
 
@@ -193,17 +195,17 @@ for i = 1, 10000 do
   rolls[i] = stats.rand(1, 6) + stats.rand(1, 6)
 end
 
-local frequencies = stats.frecuencyF(rolls)
+local frequencies = stats.frequency(rolls)
 
-for i = 1, #frequencies.c do
-  print("Frequency - Sum Number:", frequencies.g[i], frequencies.c[i])
+for i = 1, #frequencies.counts do
+  print("Frequency - Sum Number:", frequencies.values[i], frequencies.counts[i])
 end
 ```
 
 ### Normal distribution quality control sample
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local alpha = 5 / 100
 
@@ -221,7 +223,7 @@ Expected output:
 ### Random choice and sampling
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local names = {"Lua", "Python", "R"}
 
@@ -237,12 +239,26 @@ end
 ### Weighted choice
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local items = {"low", "medium", "high"}
 local weights = {1, 2, 7}
 
 print(stats.weighted_choice(items, weights))
+```
+
+### Deterministic custom RNG
+
+```lua
+local stats = require("luasf")
+
+stats.set_rng(function()
+  return 0.0
+end)
+
+print(stats.choice({"first", "second", "third"})) -- first
+
+stats.reset_rng()
 ```
 
 ---
@@ -322,14 +338,15 @@ lua examples/gamma_distribution.lua
 * Additional statistics helpers
 * Sampling utilities
 * Deterministic simulation support
-* Manual GitHub Actions CI
-* LuaRocks package validation
 * LuaRocks publishing
 
 ### Planned
 
+* Manual GitHub Actions CI
+* LuaRocks package validation workflow
 * More examples
 * More statistical helpers
+* Optional documentation generation
 
 ---
 
