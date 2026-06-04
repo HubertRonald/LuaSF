@@ -31,6 +31,5 @@ jobs:
       - name: Build rock locally
         run: luarocks make "${{ github.event.inputs.rockspec }}"
 
-      # Enable this step only after validation works.
-      # - name: Upload to LuaRocks
-      #   run: luarocks upload "${{ github.event.inputs.rockspec }}" --api-key="${{ secrets.LUAROCKS_API_KEY }}"
+      - name: Upload to LuaRocks
+        run: luarocks upload "${{ github.event.inputs.rockspec }}" --api-key="${{ secrets.LUAROCKS_API_KEY }}"
