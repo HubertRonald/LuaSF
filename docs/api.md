@@ -2,7 +2,7 @@
 
 LuaSF stands for **Lua Statistics Functions**.
 
-This document describes the public LuaSF API after the compatibility revival and Phase 3 statistics/sampling additions.
+This document describes the public LuaSF API after the compatibility revival, Phase 3 statistics/sampling additions, and LuaRocks publishing.
 
 LuaSF keeps the legacy public API available while adding clearer modern aliases.
 
@@ -10,28 +10,28 @@ LuaSF keeps the legacy public API available while adding clearer modern aliases.
 
 ## Module loading
 
-Recommended compatibility entry point:
+### Recommended LuaRocks entry point
+
+```lua
+local stats = require("luasf")
+```
+
+### Compatibility entry point
 
 ```lua
 local stats = require("LuaSF")
 ```
 
-README-compatible legacy entry point:
+### Legacy README-compatible entry point
 
 ```lua
 local stats = require("LuaStat")
 ```
 
-Development/internal implementation module:
+### Development/internal implementation module
 
 ```lua
 local stats = require("src.luasf")
-```
-
-Future LuaRocks package-style entry point:
-
-```lua
-local stats = require("luasf")
 ```
 
 ---
@@ -43,7 +43,7 @@ local stats = require("luasf")
 Returns the sum of numeric values in an array.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.sumF({1, 2, 3})) -- 6
 ```
@@ -61,7 +61,7 @@ stats.sum(array)
 Returns the arithmetic mean of numeric values in an array.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.avF({2, 4, 6})) -- 4
 ```
@@ -79,7 +79,7 @@ stats.mean(array)
 Returns the sample standard deviation using `n - 1`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.stvF({2, 4, 6})) -- 2
 ```
@@ -97,7 +97,7 @@ stats.stddev(array)
 Returns a frequency table.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local result = stats.frecuencyF({2, 1, 2, 3, 3, 3})
 
@@ -137,7 +137,7 @@ stats.frequency(array)
 Returns the sample variance using `n - 1`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.variance({2, 4, 6})) -- 4
 ```
@@ -149,7 +149,7 @@ print(stats.variance({2, 4, 6})) -- 4
 Returns the median value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.median({3, 1, 2}))    -- 2
 print(stats.median({4, 1, 2, 3})) -- 2.5
@@ -162,7 +162,7 @@ print(stats.median({4, 1, 2, 3})) -- 2.5
 Returns the minimum value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.min({3, 1, 2})) -- 1
 ```
@@ -174,7 +174,7 @@ print(stats.min({3, 1, 2})) -- 1
 Returns the maximum value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.max({3, 1, 2})) -- 3
 ```
@@ -188,7 +188,7 @@ Returns the `q` quantile using linear interpolation.
 `q` must be between `0` and `1`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.quantile({1, 2, 3, 4, 5}, 0.5)) -- 3
 ```
@@ -202,7 +202,7 @@ print(stats.quantile({1, 2, 3, 4, 5}, 0.5)) -- 3
 Returns one random item from an array.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local names = {"Lua", "Python", "R"}
 
@@ -218,7 +218,7 @@ Returns a shuffled copy of an array.
 This function does not modify the original array.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local values = {1, 2, 3, 4}
 local shuffled = stats.shuffle(values)
@@ -235,7 +235,7 @@ end
 Returns `n` random items without replacement.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local values = {"a", "b", "c", "d"}
 local selected = stats.sample(values, 2)
@@ -249,12 +249,12 @@ end
 
 ### `weighted_choice(items, weights)`
 
-Returns one random item using weights.
+Returns one random item using the given weights.
 
 `items` and `weights` must have the same length.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 local items = {"low", "medium", "high"}
 local weights = {1, 2, 7}
@@ -271,7 +271,7 @@ Sets a custom random number generator.
 The function should return a number between `0` and `1`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 stats.set_rng(function()
   return 0.0
@@ -289,7 +289,7 @@ stats.reset_rng()
 Restores Lua's default random number generator.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 stats.reset_rng()
 ```
@@ -310,7 +310,7 @@ Parameters:
 * `sig`: standard deviation. Default: `1`
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.normalVA(0, 1))
 ```
@@ -340,7 +340,7 @@ Parameters:
 * `sig`: standard deviation. Default: `1`
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.normal_inv_D(0.975, 0, 1))
 ```
@@ -358,7 +358,7 @@ stats.inverse_normal(p, mu, sig)
 Returns `1` with probability `p`, otherwise returns `0`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.bernoulliVA(0.5))
 ```
@@ -376,7 +376,7 @@ stats.bernoulli(p)
 Returns a uniformly distributed random value between `min` and `max`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.unifVA(10, 20))
 ```
@@ -394,7 +394,7 @@ stats.uniform(min, max)
 Returns an exponentially distributed random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.expoVA(1))
 ```
@@ -412,7 +412,7 @@ stats.exponential(beta)
 Returns a Weibull-distributed random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.weibullVA(1, 2))
 ```
@@ -430,7 +430,7 @@ stats.weibull(alpha, beta)
 Returns an Erlang-distributed random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.erlangVA(3, 1))
 ```
@@ -454,7 +454,7 @@ Parameters:
 * `c`: upper limit
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.trianVA(0, 0.5, 1))
 ```
@@ -477,7 +477,7 @@ Parameters:
 * `p`: success probability
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.binomialVA(10, 0.5))
 ```
@@ -495,7 +495,7 @@ stats.binomial(n, p)
 Returns a geometrically distributed random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.geometricVA(0.5))
 ```
@@ -513,7 +513,7 @@ stats.geometric(p)
 Returns a Poisson-distributed random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.poissonVA(2))
 ```
@@ -531,7 +531,7 @@ stats.poisson(lambda)
 Returns a chi-square-distributed random value with `n` degrees of freedom.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.chiSquareVA(3))
 ```
@@ -554,7 +554,7 @@ Parameters:
 * `lambda`: rate parameter
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.gamVA(2, 1))
 ```
@@ -572,7 +572,7 @@ stats.gamma(alpha, lambda)
 Returns a log-normal random value.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.lognoVA(1, 0.25))
 ```
@@ -598,7 +598,7 @@ stats.lognormal(m, s)
 Returns a random number using LuaSF's current random generator.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 print(stats.rand())      -- random decimal
 print(stats.rand(6))     -- random integer from 1 to 6
@@ -618,7 +618,7 @@ stats.random_integer(min, max)
 Sets Lua's random seed using `math.randomseed`.
 
 ```lua
-local stats = require("LuaSF")
+local stats = require("luasf")
 
 stats.seed(1234)
 
