@@ -27,6 +27,9 @@
     </a>
     <img src="https://img.shields.io/badge/status-revival%20phase-orange?style=flat-square" alt="Project status" />
     <img src="https://img.shields.io/badge/pure%20Lua-no%20native%20deps-blueviolet?style=flat-square" alt="Pure Lua" />
+    <a href="https://luarocks.org/modules/HubertRonald/luasf" target="_blank">
+        <img src="https://img.shields.io/badge/LuaRocks-published-0B63CE?style=flat-square&logo=lua&logoColor=white" alt="LuaRocks published" />
+    </a>
 </p>
 
 **LuaSF** stands for **Lua Statistics Functions**.
@@ -319,12 +322,12 @@ lua examples/gamma_distribution.lua
 * Additional statistics helpers
 * Sampling utilities
 * Deterministic simulation support
-
-### Planned
-
 * Manual GitHub Actions CI
 * LuaRocks package validation
 * LuaRocks publishing
+
+### Planned
+
 * More examples
 * More statistical helpers
 
