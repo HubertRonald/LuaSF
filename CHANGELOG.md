@@ -8,12 +8,26 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ## [Unreleased]
 
+### Added
+
+* Added `mode(array)`.
+* Added `range(array)`.
+* Added `iqr(array)`.
+* Added `percentile(array, p)`.
+* Added `summary(array)`.
+* Added `examples/weighted_loot_drop.lua`.
+* Added `examples/monte_carlo_pi.lua`.
+* Added `examples/poisson_arrivals.lua`.
+* Added `examples/binomial_coin_flips.lua`.
+* Added `examples/bootstrap_mean.lua`.
+
 ### Planned
 
-* Continue improving documentation and examples.
-* Add manual GitHub Actions CI.
-* Add LuaRocks validation and publishing workflow improvements.
-* Consider additional statistics helpers and distribution examples.
+* Improve GitHub Actions CI with optional automatic checks for pull requests.
+* Improve LuaRocks validation and publishing workflows.
+* Add more distribution examples and simulation-oriented examples.
+* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
+* Evaluate future combinatorics helpers such as `factorial`, `combinations`, and `permutations`.
 
 ---
 
