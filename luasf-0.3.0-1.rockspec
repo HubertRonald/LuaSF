@@ -1,16 +1,16 @@
 package = "luasf"
-version = "0.2.0-1"
+version = "0.3.0-1"
 
 source = {
   url = "git://github.com/HubertRonald/LuaSF.git",
-  tag = "v0.2.0"
+  tag = "v0.3.0"
 }
 
 description = {
   summary = "Lua Statistics Functions",
   detailed = [[
-LuaSF is a lightweight, pure-Lua library for basic descriptive statistics
-and random variable generation.
+LuaSF is a lightweight, pure-Lua library for descriptive statistics,
+sampling utilities, and random variable generation.
   ]],
   homepage = "https://github.com/HubertRonald/LuaSF",
   license = "MIT",
