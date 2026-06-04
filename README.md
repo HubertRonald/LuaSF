@@ -6,27 +6,23 @@
         <img src="https://img.shields.io/badge/LuaRocks-planned-lightgrey?style=flat-square&logo=lua&logoColor=white" alt="LuaRocks planned" />
     </a>
     <a href="https://github.com/HubertRonald/LuaSF/blob/master/LICENSE" target="_blank">
-        <img src="https://img.shields.io/github/license/HubertRonald/LuaSF?style=flat-square&color=success" alt="License" />
+        <img src="https://img.shields.io/badge/license-MIT-success?style=flat-square" alt="MIT License" />
     </a>
     <a href="https://github.com/HubertRonald/LuaSF/stargazers" target="_blank">
-        <img src="https://img.shields.io/github/stars/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub stars" />
+        <img src="https://img.shields.io/badge/stars-6-blue?style=flat-square&logo=github" alt="GitHub stars" />
     </a>
     <a href="https://github.com/HubertRonald/LuaSF/forks" target="_blank">
-        <img src="https://img.shields.io/github/forks/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub forks" />
-    </a>
-    <a href="https://github.com/HubertRonald/LuaSF/issues" target="_blank">
-        <img src="https://img.shields.io/github/issues/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub issues" />
-    </a>
-    <a href="https://github.com/HubertRonald/LuaSF/pulls" target="_blank">
-        <img src="https://img.shields.io/github/issues-pr/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub pull requests" />
+        <img src="https://img.shields.io/badge/forks-3-blue?style=flat-square&logo=github" alt="GitHub forks" />
     </a>
     <a href="https://github.com/HubertRonald/LuaSF/graphs/contributors" target="_blank">
-        <img src="https://img.shields.io/github/contributors/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub contributors" />
+        <img src="https://img.shields.io/badge/contributors-2-yellow?style=flat-square&logo=github" alt="GitHub contributors" />
     </a>
-    <a href="https://github.com/HubertRonald/LuaSF/commits/master" target="_blank">
-        <img src="https://img.shields.io/github/last-commit/HubertRonald/LuaSF?style=flat-square&logo=github" alt="GitHub last commit" />
+    <a href="https://github.com/HubertRonald/LuaSF/issues" target="_blank">
+        <img src="https://img.shields.io/badge/issues-open-green?style=flat-square&logo=github" alt="GitHub issues" />
     </a>
-    <img src="https://img.shields.io/github/commit-activity/t/HubertRonald/LuaSF?style=flat-square&color=dodgerblue" alt="GitHub commit activity" />
+    <a href="https://github.com/HubertRonald/LuaSF/pulls" target="_blank">
+        <img src="https://img.shields.io/badge/pull%20requests-open-yellow?style=flat-square&logo=github" alt="GitHub pull requests" />
+    </a>
     <img src="https://img.shields.io/badge/status-revival%20phase-orange?style=flat-square" alt="Project status" />
     <img src="https://img.shields.io/badge/pure%20Lua-no%20native%20deps-blueviolet?style=flat-square" alt="Pure Lua" />
 </p>
