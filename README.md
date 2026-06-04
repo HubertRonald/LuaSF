@@ -149,6 +149,28 @@ print(stats.stddev(values)) -- sample standard deviation
 
 > Note: `nomalVA` and `lognoRandVA` are preserved as compatibility aliases.
 
+
+### Additional descriptive statistics
+
+| Function | Description |
+|---|---|
+| `variance(array)` | Sample variance using `n - 1` |
+| `median(array)` | Median value |
+| `min(array)` | Minimum value |
+| `max(array)` | Maximum value |
+| `quantile(array, q)` | Quantile using linear interpolation |
+
+### Sampling utilities
+
+| Function | Description |
+|---|---|
+| `choice(array)` | Returns one random item from an array |
+| `shuffle(array)` | Returns a shuffled copy of an array |
+| `sample(array, n)` | Returns `n` random items without replacement |
+| `weighted_choice(items, weights)` | Returns one random item using weights |
+| `set_rng(rng_function)` | Sets a custom random number generator |
+| `reset_rng()` | Restores Lua's default random number generator |
+
 ---
 
 ## Examples
@@ -189,6 +211,22 @@ Expected output:
 ```text
 -1.9688213737864
 1.9688213737864
+```
+
+### Random Choice sample
+
+```lua
+local stats = require("LuaSF")
+
+local names = {"Lua", "Python", "R"}
+
+print(stats.choice(names))
+
+local selected = stats.sample(names, 2)
+
+for i = 1, #selected do
+  print(selected[i])
+end
 ```
 
 ---

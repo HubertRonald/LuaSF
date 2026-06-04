@@ -495,6 +495,62 @@ stats.lognormal(m, s)
 
 ---
 
+## Phase 3 statistics helpers
+
+### `variance(array)`
+
+Returns the sample variance using `n - 1`.
+
+### `median(array)`
+
+Returns the median value.
+
+### `min(array)`
+
+Returns the minimum value.
+
+### `max(array)`
+
+Returns the maximum value.
+
+### `quantile(array, q)`
+
+Returns the `q` quantile using linear interpolation.
+
+`q` must be between `0` and `1`.
+
+## Sampling utilities
+
+### `choice(array)`
+
+Returns one random item from the array.
+
+### `shuffle(array)`
+
+Returns a shuffled copy of the array.
+
+This function does not modify the original array.
+
+### `sample(array, n)`
+
+Returns `n` random items without replacement.
+
+### `weighted_choice(items, weights)`
+
+Returns one random item using the given weights.
+
+### `set_rng(rng_function)`
+
+Sets a custom random number generator.
+
+The function should return a number between `0` and `1`.
+
+### `reset_rng()`
+
+Restores Lua's default random number generator.
+
+---
+
 ## Utility functions
 
 ### `rand()`
