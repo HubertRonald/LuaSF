@@ -4,9 +4,22 @@ on:
   workflow_dispatch:
     inputs:
       rockspec:
-        description: "Rockspec file to validate"
+        description: "Rockspec file to validate or publish"
         required: true
-        default: "luasf-0.3.0-1.rockspec"
+        default: "luasf-0.4.0-1.rockspec"
+        type: string
+      publish:
+        description: "Publish to LuaRocks after validation"
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: luarocks-publish
+  cancel-in-progress: false
 
 jobs:
   validate:
@@ -15,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Lua
         uses: leafo/gh-actions-lua@v13
@@ -26,10 +39,38 @@ jobs:
         uses: leafo/gh-actions-luarocks@v6
 
       - name: Validate rockspec
-        run: luarocks lint "${{ github.event.inputs.rockspec }}"
+        run: luarocks lint "${{ inputs.rockspec }}"
 
       - name: Build rock locally
-        run: luarocks make "${{ github.event.inputs.rockspec }}"
+        run: luarocks make "${{ inputs.rockspec }}"
+
+      - name: Test LuaRocks package entry point
+        run: lua -e 'local stats = require("luasf"); print(stats.sum({1,2,3}))'
+
+      - name: Test LuaSF compatibility entry point
+        run: lua -e 'local stats = require("LuaSF"); print(stats.sumF({1,2,3}))'
+
+      - name: Test LuaStat compatibility entry point
+        run: lua -e 'local stats = require("LuaStat"); print(stats.avF({2,4,6}))'
+
+  publish:
+    name: Publish to LuaRocks
+    needs: validate
+    runs-on: ubuntu-latest
+    if: ${{ inputs.publish == true }}
+    environment: luarocks-production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Lua
+        uses: leafo/gh-actions-lua@v13
+        with:
+          luaVersion: "5.4.8"
+
+      - name: Set up LuaRocks
+        uses: leafo/gh-actions-luarocks@v6
 
       - name: Upload to LuaRocks
-        run: luarocks upload "${{ github.event.inputs.rockspec }}" --api-key="${{ secrets.LUAROCKS_API_KEY }}"
+        run: luarocks upload "${{ inputs.rockspec }}" --api-key="${{ secrets.LUAROCKS_API_KEY }}"

@@ -3,6 +3,21 @@ name: CI
 on:
   workflow_dispatch:
 
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "src/**"
+      - "spec/**"
+      - "examples/**"
+      - "LuaSF.lua"
+      - "LuaStat.lua"
+      - "*.rockspec"
+      - ".github/workflows/ci.yml"
+
+permissions:
+  contents: read
+
 jobs:
   test:
     name: Lua ${{ matrix.lua-version }}
@@ -20,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Lua
         uses: leafo/gh-actions-lua@v13
@@ -33,6 +48,9 @@ jobs:
       - name: Install test dependencies
         run: luarocks install luaunit
 
+      - name: Configure local Lua module path
+        run: echo "LUA_PATH=./src/?.lua;./?.lua;${LUA_PATH}" >> "$GITHUB_ENV"
+
       - name: Run tests
         run: |
           lua spec/test_stats.lua
@@ -44,3 +62,8 @@ jobs:
           lua examples/dice_simulation.lua
           lua examples/normal_quality_control.lua
           lua examples/gamma_distribution.lua
+          lua examples/weighted_loot_drop.lua
+          lua examples/monte_carlo_pi.lua
+          lua examples/poisson_arrivals.lua
+          lua examples/binomial_coin_flips.lua
+          lua examples/bootstrap_mean.lua
