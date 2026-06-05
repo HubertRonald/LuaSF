@@ -1,4 +1,4 @@
-local stats = require("src.luasf")
+local stats = require("luasf")
 
 local alpha = 0.05
 
