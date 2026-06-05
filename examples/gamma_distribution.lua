@@ -1,4 +1,4 @@
-local stats = require("src.luasf")
+local stats = require("luasf")
 
 for i = 1, 10 do
   print(stats.gamVA(2, 1))
