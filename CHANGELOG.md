@@ -10,6 +10,44 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ### Added
 
+* Added modular internal source layout under `src/luasf/`.
+* Added `src/luasf/core.lua`.
+* Added `src/luasf/validation.lua`.
+* Added `src/luasf/rng.lua`.
+* Added `src/luasf/descriptive.lua`.
+* Added `src/luasf/sampling.lua`.
+* Added `src/luasf/distributions.lua`.
+* Added `src/luasf/bivariate.lua`.
+* Added `src/luasf/probability.lua` as a placeholder for future probability helpers.
+* Added `covariance(x, y)`.
+* Added `correlation(x, y)`.
+* Added `pearson(x, y)` as an alias for `correlation(x, y)`.
+* Added `spec/test_bivariate.lua`.
+* Added `examples/covariance_correlation.lua`.
+* Added `rockspec/luasf-0.5.0-1.rockspec` as the next LuaRocks release draft.
+
+### Changed
+
+* Kept `src/luasf.lua` as the public facade module.
+* Preserved the existing public API while moving implementation details into smaller internal modules.
+* Moved LuaRocks specification files into the `rockspec/` directory.
+* Updated documentation to describe the modular layout and bivariate statistics helpers.
+* Updated CI expectations to include bivariate tests and the covariance/correlation example.
+
+### Planned
+
+* Add shape statistics helpers such as `skewness(array)` and `kurtosis(array)`.
+* Explore future probability helpers such as `factorial(n)`, `combinations(n, r)`, and `permutations(n, r)`.
+* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
+* Consider simple formula-based regression summaries later, without turning LuaSF into a machine learning framework.
+* Add more distribution examples and simulation-oriented examples.
+
+---
+
+## [0.4.0] - 2026-06-04
+
+### Added
+
 * Added `mode(array)`.
 * Added `range(array)`.
 * Added `iqr(array)`.
@@ -20,14 +58,13 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 * Added `examples/poisson_arrivals.lua`.
 * Added `examples/binomial_coin_flips.lua`.
 * Added `examples/bootstrap_mean.lua`.
+* Added `luasf-0.4.0-1.rockspec`.
 
-### Planned
+### Documentation
 
-* Improve GitHub Actions CI with optional automatic checks for pull requests.
-* Improve LuaRocks validation and publishing workflows.
-* Add more distribution examples and simulation-oriented examples.
-* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
-* Evaluate future combinatorics helpers such as `factorial`, `combinations`, and `permutations`.
+* Updated `README.md`.
+* Updated `docs/api.md`.
+* Updated `CHANGELOG.md`.
 
 ---
 

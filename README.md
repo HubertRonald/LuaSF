@@ -42,9 +42,11 @@ The project started around 2014 and was later published under the MIT License. I
 * Pure Lua implementation
 * No native dependencies
 * Lua 5.1+ friendly
-* Single-file friendly
+* Single-file friendly public API
+* Modular internal source layout
 * Basic descriptive statistics
 * Summary statistics helpers
+* Bivariate statistics helpers
 * Sampling utilities
 * Discrete and continuous pseudo-random variables
 * Compatible with the existing public LuaSF API
@@ -153,6 +155,14 @@ print(stats.stvF(values)) -- sample standard deviation
 | `percentile(array, p)` | Percentile where `p` is between `0` and `100`                          |
 | `summary(array)`       | Summary table with count, min, max, mean, median, variance, and stddev |
 
+### Bivariate statistics
+
+| Function | Description |
+|---|---|
+| `covariance(x, y)` | Sample covariance using `n - 1` |
+| `correlation(x, y)` | Pearson correlation coefficient |
+| `pearson(x, y)` | Alias for `correlation(x, y)` |
+
 ### Sampling utilities
 
 | Function                          | Description                                    |
@@ -191,6 +201,36 @@ print(stats.stvF(values)) -- sample standard deviation
 
 ## Examples
 
+### Summary statistics
+
+```lua
+local stats = require("luasf")
+
+local values = {10, 12, 14, 15, 18, 20}
+local result = stats.summary(values)
+
+print("Count:", result.count)
+print("Min:", result.min)
+print("Max:", result.max)
+print("Mean:", result.mean)
+print("Median:", result.median)
+print("Variance:", result.variance)
+print("Stddev:", result.stddev)
+```
+
+### Covariance and correlation
+
+```lua
+local stats = require("luasf")
+
+local study_hours = {1, 2, 3, 4, 5}
+local exam_scores = {50, 55, 65, 70, 80}
+
+print(stats.covariance(study_hours, exam_scores))
+print(stats.correlation(study_hours, exam_scores))
+```
+
+
 ### Twice two dice simulation
 
 ```lua
@@ -207,23 +247,6 @@ local frequencies = stats.frequency(rolls)
 for i = 1, #frequencies.counts do
   print("Frequency - Sum Number:", frequencies.values[i], frequencies.counts[i])
 end
-```
-
-### Summary statistics
-
-```lua
-local stats = require("luasf")
-
-local values = {10, 12, 14, 15, 18, 20}
-local result = stats.summary(values)
-
-print("Count:", result.count)
-print("Min:", result.min)
-print("Max:", result.max)
-print("Mean:", result.mean)
-print("Median:", result.median)
-print("Variance:", result.variance)
-print("Stddev:", result.stddev)
 ```
 
 ### Normal distribution quality control sample
@@ -293,10 +316,20 @@ stats.reset_rng()
 LuaSF/
   src/
     luasf.lua
+    luasf/
+      core.lua
+      descriptive.lua
+      sampling.lua
+      distributions.lua
+      bivariate.lua
+      probability.lua
+      validation.lua
+      rng.lua
   spec/
     test_stats.lua
     test_distributions.lua
     test_sampling.lua
+    test_bivariate.lua
   examples/
     dice_simulation.lua
     normal_quality_control.lua
@@ -306,20 +339,24 @@ LuaSF/
     poisson_arrivals.lua
     binomial_coin_flips.lua
     bootstrap_mean.lua
+    covariance_correlation.lua
   docs/
     api.md
   .github/
     workflows/
       ci.yml
       publish-luarocks.yml
+  rockspec/
+    luasf-0.2.0-1.rockspec
+    luasf-0.3.0-1.rockspec
+    luasf-0.4.0-1.rockspec
+    luasf-0.5.0-1.rockspec
   LuaSF.lua
   LuaStat.lua
   README.md
   CHANGELOG.md
   CONTRIBUTING.md
   LICENSE
-  luasf-0.2.0-1.rockspec
-  luasf-0.3.0-1.rockspec
 ```
 
 ---
@@ -339,6 +376,7 @@ Run tests:
 lua spec/test_stats.lua
 lua spec/test_distributions.lua
 lua spec/test_sampling.lua
+lua spec/test_bivariate.lua
 ```
 
 ---
@@ -354,6 +392,7 @@ lua examples/monte_carlo_pi.lua
 lua examples/poisson_arrivals.lua
 lua examples/binomial_coin_flips.lua
 lua examples/bootstrap_mean.lua
+lua examples/covariance_correlation.lua
 ```
 
 ---
@@ -363,25 +402,34 @@ lua examples/bootstrap_mean.lua
 ### Completed
 
 * Compatibility-safe project revival
-* Cleaner module structure
+* Cleaner modular source structure
 * Legacy API preservation
 * Modern aliases
 * Basic tests
 * Examples
 * API documentation
 * Additional statistics helpers
+* Summary statistics helpers
+* Bivariate statistics helpers
 * Sampling utilities
 * Deterministic simulation support
 * LuaRocks publishing
 
 ### Planned
 
-* Improve GitHub Actions CI with optional automatic checks for pull requests
-* Improve LuaRocks validation and publishing workflows
-* More examples
-* More statistical helpers
+* Shape statistics helpers such as `skewness(array)` and `kurtosis(array)`
+* Future probability helpers such as `factorial`, `combinations`, and `permutations`
 * Lightweight cross-reference with LuaHMF
-* Future combinatorics helpers such as `factorial`, `combinations`, and `permutations`
+* More distribution and simulation examples
+* Optional simple formula-based regression summaries, without turning LuaSF into a machine learning framework
+
+---
+
+## Scope
+
+LuaSF is focused on lightweight statistics, probability, random variables, and simulation helpers.
+
+Optimization-based modeling, machine learning workflows, model training pipelines, and non-linear regression are intentionally outside the current scope of LuaSF.
 
 ---
 

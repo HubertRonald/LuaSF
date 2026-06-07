@@ -67,3 +67,5 @@ jobs:
           lua examples/poisson_arrivals.lua
           lua examples/binomial_coin_flips.lua
           lua examples/bootstrap_mean.lua
+          lua spec/test_bivariate.lua
+          lua examples/covariance_correlation.lua
