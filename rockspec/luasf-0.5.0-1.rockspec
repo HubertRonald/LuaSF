@@ -1,9 +1,9 @@
 package = "luasf"
-version = "0.4.0-1"
+version = "0.5.0-1"
 
 source = {
   url = "git://github.com/HubertRonald/LuaSF.git",
-  tag = "v0.4.0"
+  tag = "v0.5.0"
 }
 
 description = {

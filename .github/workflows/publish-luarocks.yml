@@ -6,7 +6,7 @@ on:
       rockspec:
         description: "Rockspec file to validate or publish"
         required: true
-        default: "luasf-0.4.0-1.rockspec"
+        default: "rockspec/luasf-0.5.0-1.rockspec"
         type: string
       publish:
         description: "Publish to LuaRocks after validation"
