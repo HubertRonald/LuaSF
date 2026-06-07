@@ -1,5 +1,5 @@
 local luaunit = require("luaunit")
-local stats = require("src.luasf")
+local stats = require("luasf")
 
 TestStats = {}
 
