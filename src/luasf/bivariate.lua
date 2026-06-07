@@ -4,8 +4,6 @@ local prefix = module_name:match("^src%.") and "src.luasf." or "luasf."
 local validation = require(prefix .. "validation")
 local descriptive = require(prefix .. "descriptive")
 
-local sqrt = math.sqrt
-
 local M = {}
 
 local function covariance(x, y)
