@@ -23,7 +23,7 @@ local function covariance(x, y)
   return total / (#x - 1)
 end
 
-local function correlation(x, y)
+local function pearson_correlation(x, y)
   validation.assert_same_length_numeric_arrays(x, y, "x", "y")
   assert(#x >= 2, "x and y must contain at least two values")
 
@@ -37,7 +37,8 @@ local function correlation(x, y)
 end
 
 M.covariance = covariance
-M.correlation = correlation
-M.pearson = correlation
+M.correlation = pearson_correlation
+M.pearson = pearson_correlation
+M.pearson_correlation = pearson_correlation
 
 return M
