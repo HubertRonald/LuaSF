@@ -36,6 +36,34 @@ local stats = require("src.luasf")
 
 ---
 
+## Internal module layout
+
+LuaSF exposes a single public facade through:
+
+```lua
+local stats = require("luasf")
+```
+
+Internally, the implementation is split into smaller modules:
+
+```text
+src/
+  luasf.lua
+  luasf/
+    core.lua
+    descriptive.lua
+    sampling.lua
+    distributions.lua
+    bivariate.lua
+    probability.lua
+    validation.lua
+    rng.lua
+```
+
+This keeps the public API stable while making the source code easier to maintain.
+
+---
+
 ## Descriptive statistics
 
 ### `sumF(array)`
@@ -288,6 +316,60 @@ print(result.median)   -- 3
 print(result.variance) -- 2.5
 ```
 
+
+---
+
+## Bivariate statistics
+
+### `covariance(x, y)`
+
+Returns the sample covariance between two numeric arrays.
+
+LuaSF uses the sample covariance formula with `n - 1`.
+
+Both arrays must:
+
+* be tables
+* contain numeric values
+* have the same length
+* contain at least two values
+
+Example:
+
+```lua
+local stats = require("luasf")
+
+local x = {1, 2, 3, 4, 5}
+local y = {2, 4, 6, 8, 10}
+
+print(stats.covariance(x, y)) -- 5
+```
+
+### `correlation(x, y)`
+
+Returns the Pearson correlation coefficient between two numeric arrays.
+
+Both arrays must have the same length and non-zero sample standard deviation.
+
+Example:
+
+```lua
+local stats = require("luasf")
+
+local x = {1, 2, 3, 4, 5}
+local y = {2, 4, 6, 8, 10}
+
+print(stats.correlation(x, y)) -- 1
+```
+
+### `pearson(x, y)`
+
+Alias for:
+
+```lua
+stats.correlation(x, y)
+```
+
 ---
 
 ## Sampling utilities
@@ -394,6 +476,26 @@ stats.reset_rng()
 ## Random variables and distributions
 
 LuaSF provides functions for discrete and continuous pseudo-random variables.
+
+| Legacy name | Modern alias | Description |
+|---|---|---|
+| `nomalVA(mu, sig)` | `normal(mu, sig)` | Normal random variable |
+| `normalVA(mu, sig)` | `normal(mu, sig)` | Normal random variable |
+| `normal_inv_D(p, mu, sig)` | `inverse_normal(p, mu, sig)` | Approximate inverse normal value |
+| `bernoulliVA(p)` | `bernoulli(p)` | Bernoulli random variable |
+| `unifVA(min, max)` | `uniform(min, max)` | Uniform random variable |
+| `expoVA(beta)` | `exponential(beta)` | Exponential random variable |
+| `weibullVA(alpha, beta)` | `weibull(alpha, beta)` | Weibull random variable |
+| `erlangVA(n, lambda)` | `erlang(n, lambda)` | Erlang random variable |
+| `trianVA(a, b, c)` | `triangular(a, b, c)` | Triangular random variable |
+| `binomialVA(n, p)` | `binomial(n, p)` | Binomial random variable |
+| `geometricVA(p)` | `geometric(p)` | Geometric random variable |
+| `poissonVA(lambda)` | `poisson(lambda)` | Poisson random variable |
+| `chiSquareVA(n)` | `chi_square(n)` | Chi-square random variable |
+| `gamVA(alpha, lambda)` | `gamma(alpha, lambda)` | Gamma random variable |
+| `lognoVA(m, s)` | `lognormal(m, s)` | Log-normal random variable |
+| `lognoRandVA(m, s)` | `lognormal(m, s)` | Log-normal random variable |
+
 
 ### `normalVA(mu, sig)`
 
