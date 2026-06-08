@@ -8,6 +8,48 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ## [Unreleased]
 
+### Planned
+
+* Continue improving examples and documentation.
+* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
+* Evaluate future probability helpers such as `factorial`, `combinations`, and `permutations`.
+* Evaluate optional formula-based simple regression summaries while keeping ML workflows outside the current scope.
+* Add more distribution examples and simulation-oriented examples.
+
+---
+
+## [0.6.0] - 2026-06-07
+
+### Added
+
+* Added `central_moment(array, order)`.
+* Added `skewness(array)`.
+* Added `kurtosis(array)`.
+* Added `excess_kurtosis(array)`.
+* Added `src/luasf/shape.lua` for shape statistics helpers.
+* Added `spec/test_shape.lua`.
+* Added `examples/skewness_kurtosis.lua`.
+* Added `rockspec/luasf-0.6.0-1.rockspec`.
+
+### Changed
+
+* Updated the public facade `src/luasf.lua` to expose shape statistics helpers.
+* Updated CI to run shape statistics tests and the new shape statistics example.
+* Updated LuaRocks publishing workflow default rockspec path for `v0.6.0`.
+* Updated README, API documentation, changelog, and contribution notes for shape statistics.
+
+### Notes
+
+Shape statistics are implemented as moment-based descriptive statistics:
+
+* `skewness(array)` returns the standardized third central moment.
+* `kurtosis(array)` returns Pearson kurtosis.
+* `excess_kurtosis(array)` returns `kurtosis(array) - 3`.
+
+---
+
+## [0.5.0] - 2026-06-07
+
 ### Added
 
 * Added modular internal source layout under `src/luasf/`.
@@ -33,14 +75,6 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 * Moved LuaRocks specification files into the `rockspec/` directory.
 * Updated documentation to describe the modular layout and bivariate statistics helpers.
 * Updated CI expectations to include bivariate tests and the covariance/correlation example.
-
-### Planned
-
-* Add shape statistics helpers such as `skewness(array)` and `kurtosis(array)`.
-* Explore future probability helpers such as `factorial(n)`, `combinations(n, r)`, and `permutations(n, r)`.
-* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
-* Consider simple formula-based regression summaries later, without turning LuaSF into a machine learning framework.
-* Add more distribution examples and simulation-oriented examples.
 
 ---
 

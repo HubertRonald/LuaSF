@@ -6,7 +6,7 @@ on:
       rockspec:
         description: "Rockspec file to validate or publish"
         required: true
-        default: "rockspec/luasf-0.5.0-1.rockspec"
+        default: "rockspec/luasf-0.6.0-1.rockspec"
         type: string
       publish:
         description: "Publish to LuaRocks after validation"
@@ -46,6 +46,9 @@ jobs:
 
       - name: Test LuaRocks package entry point
         run: lua -e 'local stats = require("luasf"); print(stats.sum({1,2,3}))'
+
+      - name: Test shape statistics entry point
+        run: lua -e 'local stats = require("luasf"); print(stats.skewness({1,2,3,4,5})); print(stats.kurtosis({1,2,3,4,5}))'
 
       - name: Test LuaSF compatibility entry point
         run: lua -e 'local stats = require("LuaSF"); print(stats.sumF({1,2,3}))'

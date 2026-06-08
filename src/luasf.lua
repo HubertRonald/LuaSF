@@ -34,6 +34,7 @@ local M = {}
 merge(M, require(prefix .. "rng"))
 merge(M, require(prefix .. "core"))
 merge(M, require(prefix .. "descriptive"))
+merge(M, require(prefix .. "shape"))
 merge(M, require(prefix .. "sampling"))
 merge(M, require(prefix .. "distributions"))
 merge(M, require(prefix .. "bivariate"))

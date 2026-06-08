@@ -11,10 +11,41 @@ LuaSF is a small, pure-Lua statistics library. The project values simplicity, co
 LuaSF aims to provide:
 
 * Basic descriptive statistics
+* Summary statistics helpers
+* Shape statistics helpers such as skewness and kurtosis
+* Bivariate statistics helpers such as covariance and correlation
 * Pseudo-random variable generation
+* Sampling utilities
 * A small and readable Lua codebase
 * Compatibility with the existing public API
 * Useful examples for simulations, teaching, small scripts, and game/mod scripting
+
+---
+
+## Scope boundaries
+
+LuaSF should remain lightweight and dependency-free.
+
+Good fits for LuaSF:
+
+* Descriptive statistics
+* Shape statistics
+* Bivariate statistics
+* Probability helpers
+* Random variable generation
+* Sampling and simulation utilities
+* Formula-based statistical summaries
+
+Currently out of scope:
+
+* Machine learning pipelines
+* Optimization-based model training
+* Non-linear regression fitting
+* Deep learning
+* Native dependencies
+* Large framework-style APIs
+
+Formula-based simple regression summaries may be considered in the future, but ML-style model training is intentionally outside the current scope.
 
 ---
 
@@ -71,6 +102,7 @@ src/
     distributions.lua
     bivariate.lua
     probability.lua
+    shape.lua
     validation.lua
     rng.lua
 ```
@@ -85,6 +117,7 @@ Recommended module ownership:
 * `distributions.lua`: random variable generators
 * `probability.lua`: future probability/combinatorics helpers
 * `validation.lua`: reusable input validation helpers
+* `shape.lua`: skewness and kurtosis helpers
 * `rng.lua`: random generator and seed helpers
 * `core.lua`: small reusable internal utilities
 
@@ -106,6 +139,12 @@ luarocks install --local luaunit
 eval "$(luarocks path --local)"
 ```
 
+If needed for local development, configure Lua to load the local `src/` module path:
+
+```bash
+export LUA_PATH="./src/?.lua;./?.lua;$LUA_PATH"
+```
+
 Run tests:
 
 ```bash
@@ -113,6 +152,7 @@ lua spec/test_stats.lua
 lua spec/test_distributions.lua
 lua spec/test_sampling.lua
 lua spec/test_bivariate.lua
+lua spec/test_shape.lua
 ```
 
 Run examples:
@@ -127,6 +167,7 @@ lua examples/poisson_arrivals.lua
 lua examples/binomial_coin_flips.lua
 lua examples/bootstrap_mean.lua
 lua examples/covariance_correlation.lua
+lua examples/skewness_kurtosis.lua
 ```
 
 ---
@@ -233,8 +274,6 @@ Avoid:
 
 Potential future additions include:
 
-* `skewness(array)`
-* `kurtosis(array)`
 * `factorial(n)`
 * `combinations(n, r)`
 * `permutations(n, r)`

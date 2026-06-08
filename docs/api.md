@@ -319,6 +319,69 @@ print(result.variance) -- 2.5
 
 ---
 
+## Shape statistics
+
+Shape statistics describe the asymmetry and tail behavior of a numeric array.
+
+LuaSF implements moment-based shape helpers.
+
+### `central_moment(array, order)`
+
+Returns the central moment of a numeric array using denominator `n`.
+
+The central moment of order `k` is computed as the average of `(x_i - mean)^k`.
+
+```lua
+local stats = require("luasf")
+
+print(stats.central_moment({1, 2, 3, 4, 5}, 2)) -- 2
+```
+
+---
+
+### `skewness(array)`
+
+Returns the standardized third central moment.
+
+Values near `0` indicate approximate symmetry. Positive values suggest right skew, while negative values suggest left skew.
+
+```lua
+local stats = require("luasf")
+
+print(stats.skewness({1, 2, 3, 4, 5})) -- approximately 0
+print(stats.skewness({1, 1, 2, 2, 10})) -- positive
+```
+
+---
+
+### `kurtosis(array)`
+
+Returns Pearson kurtosis.
+
+```lua
+local stats = require("luasf")
+
+print(stats.kurtosis({1, 2, 3, 4, 5})) -- 1.7
+```
+
+---
+
+### `excess_kurtosis(array)`
+
+Returns Fisher-style excess kurtosis:
+
+```text
+kurtosis(array) - 3
+```
+
+```lua
+local stats = require("luasf")
+
+print(stats.excess_kurtosis({1, 2, 3, 4, 5})) -- -1.3
+```
+
+---
+
 ## Bivariate statistics
 
 ### `covariance(x, y)`
