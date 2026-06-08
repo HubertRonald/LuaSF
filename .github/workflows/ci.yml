@@ -56,6 +56,8 @@ jobs:
           lua spec/test_stats.lua
           lua spec/test_distributions.lua
           lua spec/test_sampling.lua
+          lua spec/test_bivariate.lua
+          lua spec/test_shape.lua
 
       - name: Run examples
         run: |
@@ -67,5 +69,5 @@ jobs:
           lua examples/poisson_arrivals.lua
           lua examples/binomial_coin_flips.lua
           lua examples/bootstrap_mean.lua
-          lua spec/test_bivariate.lua
           lua examples/covariance_correlation.lua
+          lua examples/skewness_kurtosis.lua
