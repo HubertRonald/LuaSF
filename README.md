@@ -155,6 +155,15 @@ print(stats.stvF(values)) -- sample standard deviation
 | `percentile(array, p)` | Percentile where `p` is between `0` and `100`                          |
 | `summary(array)`       | Summary table with count, min, max, mean, median, variance, and stddev |
 
+### Shape statistics
+
+| Function | Description |
+|---|---|
+| `central_moment(array, order)` | Central moment using denominator `n` |
+| `skewness(array)` | Standardized third central moment |
+| `kurtosis(array)` | Pearson kurtosis |
+| `excess_kurtosis(array)` | Fisher-style excess kurtosis, computed as `kurtosis(array) - 3` |
+
 ### Bivariate statistics
 
 | Function | Description |
@@ -319,6 +328,7 @@ LuaSF/
     luasf/
       core.lua
       descriptive.lua
+      shape.lua
       sampling.lua
       distributions.lua
       bivariate.lua
@@ -330,6 +340,7 @@ LuaSF/
     test_distributions.lua
     test_sampling.lua
     test_bivariate.lua
+    test_shape.lua
   examples/
     dice_simulation.lua
     normal_quality_control.lua
@@ -340,6 +351,7 @@ LuaSF/
     binomial_coin_flips.lua
     bootstrap_mean.lua
     covariance_correlation.lua
+    skewness_kurtosis.lua
   docs/
     api.md
   .github/
@@ -351,6 +363,7 @@ LuaSF/
     luasf-0.3.0-1.rockspec
     luasf-0.4.0-1.rockspec
     luasf-0.5.0-1.rockspec
+    luasf-0.6.0-1.rockspec
   LuaSF.lua
   LuaStat.lua
   README.md
@@ -417,11 +430,10 @@ lua examples/covariance_correlation.lua
 
 ### Planned
 
-* Shape statistics helpers such as `skewness(array)` and `kurtosis(array)`
-* Future probability helpers such as `factorial`, `combinations`, and `permutations`
-* Lightweight cross-reference with LuaHMF
 * More distribution and simulation examples
-* Optional simple formula-based regression summaries, without turning LuaSF into a machine learning framework
+* Lightweight cross-reference with LuaHMF
+* Future probability helpers such as `factorial`, `combinations`, and `permutations`
+* Optional formula-based simple regression summaries
 
 ---
 
