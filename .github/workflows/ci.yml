@@ -12,6 +12,7 @@ on:
       - "examples/**"
       - "LuaSF.lua"
       - "LuaStat.lua"
+      - "rockspec/**"
       - "*.rockspec"
       - ".github/workflows/ci.yml"
 
@@ -58,6 +59,7 @@ jobs:
           lua spec/test_sampling.lua
           lua spec/test_bivariate.lua
           lua spec/test_shape.lua
+          lua spec/test_probability.lua
 
       - name: Run examples
         run: |
@@ -71,3 +73,4 @@ jobs:
           lua examples/bootstrap_mean.lua
           lua examples/covariance_correlation.lua
           lua examples/skewness_kurtosis.lua
+          lua examples/probability_helpers.lua

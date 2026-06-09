@@ -1,5 +1,7 @@
 local M = {}
 
+local floor = math.floor
+
 function M.assert_number(value, name)
   name = name or "value"
   assert(type(value) == "number", name .. " must be a number")
@@ -49,6 +51,22 @@ function M.assert_same_length_numeric_arrays(x, y, x_name, y_name)
   M.assert_same_length_arrays(x, y, x_name, y_name)
   M.assert_numeric_array(x, x_name)
   M.assert_numeric_array(y, y_name)
+end
+
+function M.assert_integer(value, name)
+  name = name or "value"
+  M.assert_number(value, name)
+  assert(value == floor(value), name .. " must be an integer")
+end
+
+function M.assert_non_negative_integer(value, name)
+  M.assert_integer(value, name)
+  assert(value >= 0, name .. " must be greater than or equal to 0")
+end
+
+function M.assert_positive_integer(value, name)
+  M.assert_integer(value, name)
+  assert(value >= 1, name .. " must be greater than or equal to 1")
 end
 
 return M

@@ -14,6 +14,7 @@ LuaSF aims to provide:
 * Summary statistics helpers
 * Shape statistics helpers such as skewness and kurtosis
 * Bivariate statistics helpers such as covariance and correlation
+* Probability and combinatorics helpers
 * Pseudo-random variable generation
 * Sampling utilities
 * A small and readable Lua codebase
@@ -153,6 +154,7 @@ lua spec/test_distributions.lua
 lua spec/test_sampling.lua
 lua spec/test_bivariate.lua
 lua spec/test_shape.lua
+lua spec/test_probability.lua
 ```
 
 Run examples:
@@ -168,7 +170,42 @@ lua examples/binomial_coin_flips.lua
 lua examples/bootstrap_mean.lua
 lua examples/covariance_correlation.lua
 lua examples/skewness_kurtosis.lua
+lua examples/probability_helpers.lua
 ```
+
+---
+
+## Probability helper guidelines
+
+Probability and combinatorics helpers should live in:
+
+```text
+src/luasf/probability.lua
+```
+
+Tests should live in:
+
+```text
+spec/test_probability.lua
+```
+
+Examples should live in:
+
+```text
+examples/probability_helpers.lua
+```
+
+Probability and combinatorics helpers should remain lightweight and formula-based.
+
+For combinatorics helpers, please be explicit about whether order matters and whether repetition is allowed:
+
+* `permutations(n, r)` for ordered selections without repetition.
+* `combinations(n, r)` for unordered selections without repetition.
+* `permutations_with_repetition(n, r)` for ordered selections with repetition.
+* `combinations_with_repetition(n, r)` for unordered selections with repetition.
+* `multiset_permutations(counts)` for arrangements of repeated item groups.
+
+Please keep in mind that Lua numbers may lose precision for very large combinatorial values. LuaSF should remain dependency-free and should not add big integer libraries unless the project scope changes significantly.
 
 ---
 
@@ -185,8 +222,8 @@ When adding new internal modules, update the next rockspec draft so LuaRocks kno
 Before publishing, validate locally or through GitHub Actions:
 
 ```bash
-luarocks lint rockspec/luasf-0.5.0-1.rockspec
-luarocks make rockspec/luasf-0.5.0-1.rockspec
+luarocks lint rockspec/luasf-0.7.0-1.rockspec
+luarocks make rockspec/luasf-0.7.0-1.rockspec
 ```
 
 Publishing should remain manual and intentional.
@@ -246,6 +283,9 @@ Before opening a pull request, please check:
 * New behavior includes at least one test.
 * New modules are included in the rockspec draft when needed.
 * Code remains readable and dependency-light.
+* LuaRocks rockspec files are updated when preparing a package release.
+* CI workflows are updated when new tests or examples are added.
+
 
 ---
 
@@ -258,6 +298,7 @@ Prefer:
 * Small functions
 * Minimal dependencies
 * Compatibility with Lua 5.1+
+* Explicit validation for public helpers
 * Formula-based helpers when appropriate
 
 Avoid:
@@ -271,12 +312,6 @@ Avoid:
 ---
 
 ## Future scope
-
-Potential future additions include:
-
-* `factorial(n)`
-* `combinations(n, r)`
-* `permutations(n, r)`
 
 Simple formula-based regression summaries may be considered later, but optimization-based models and ML workflows are outside the current scope.
 

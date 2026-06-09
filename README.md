@@ -31,9 +31,9 @@
 
 **LuaSF** stands for **Lua Statistics Functions**.
 
-LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, sampling utilities, and pseudo-random variable generation.
+LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, shape statistics, bivariate statistics, probability helpers, sampling utilities, and pseudo-random variable generation.
 
-The project started around 2014 and was later published under the MIT License. It has now been revived with compatibility improvements, tests, examples, documentation, a cleaner module structure, additional statistics helpers, sampling utilities, and LuaRocks packaging while preserving the existing public API.
+The project started around 2014 and was later published under the MIT License. It has now been revived with compatibility improvements, tests, examples, documentation, a cleaner modular source structure, additional statistics helpers, sampling utilities, probability helpers, and LuaRocks packaging while preserving the existing public API.
 
 ---
 
@@ -47,6 +47,7 @@ The project started around 2014 and was later published under the MIT License. I
 * Basic descriptive statistics
 * Summary statistics helpers
 * Bivariate statistics helpers
+* Probability and combinatorics helpers
 * Sampling utilities
 * Discrete and continuous pseudo-random variables
 * Compatible with the existing public LuaSF API
@@ -111,6 +112,8 @@ print(stats.stddev(values))   -- sample standard deviation
 print(stats.median(values))   -- 3
 print(stats.variance(values)) -- sample variance
 print(stats.summary(values).count) -- 5
+print(stats.factorial(5))     -- 120
+print(stats.combinations(5, 2)) -- 10
 ```
 
 Legacy names are still available:
@@ -171,6 +174,23 @@ print(stats.stvF(values)) -- sample standard deviation
 | `covariance(x, y)` | Sample covariance using `n - 1` |
 | `correlation(x, y)` | Pearson correlation coefficient |
 | `pearson(x, y)` | Alias for `correlation(x, y)` |
+
+### Probability helpers
+
+| Function                                | Description                                                            |
+| --------------------------------------- | ---------------------------------------------------------------------- |
+| `factorial(n)`                          | Factorial of a non-negative integer                                    |
+| `permutations(n, r)`                    | Ordered selections without repetition, also known as `nPr`             |
+| `combinations(n, r)`                    | Unordered selections without repetition, also known as `nCr`           |
+| `permutations_with_repetition(n, r)`    | Ordered selections with repetition, calculated as `n^r`                |
+| `combinations_with_repetition(n, r)`    | Unordered selections with repetition, calculated as `C(n + r - 1, r)`  |
+| `permutations_without_repetition(n, r)` | Alias for `permutations(n, r)`                                         |
+| `combinations_without_repetition(n, r)` | Alias for `combinations(n, r)`                                         |
+| `multiset_permutations(counts)`         | Distinct arrangements of repeated item counts                          |
+| `nPr(n, r)`                             | Alias for `permutations(n, r)`                                         |
+| `nCr(n, r)`                             | Alias for `combinations(n, r)`                                         |
+
+> These helpers use Lua numbers. Very large inputs may exceed the practical numeric precision or range of the Lua runtime.
 
 ### Sampling utilities
 
@@ -341,6 +361,7 @@ LuaSF/
     test_sampling.lua
     test_bivariate.lua
     test_shape.lua
+    test_probability.lua
   examples/
     dice_simulation.lua
     normal_quality_control.lua
@@ -352,6 +373,7 @@ LuaSF/
     bootstrap_mean.lua
     covariance_correlation.lua
     skewness_kurtosis.lua
+    probability_helpers.lua
   docs/
     api.md
   .github/
@@ -364,6 +386,7 @@ LuaSF/
     luasf-0.4.0-1.rockspec
     luasf-0.5.0-1.rockspec
     luasf-0.6.0-1.rockspec
+    luasf-0.7.0-1.rockspec
   LuaSF.lua
   LuaStat.lua
   README.md
@@ -390,6 +413,7 @@ lua spec/test_stats.lua
 lua spec/test_distributions.lua
 lua spec/test_sampling.lua
 lua spec/test_bivariate.lua
+lua spec/test_probability.lua
 ```
 
 ---
@@ -406,6 +430,7 @@ lua examples/poisson_arrivals.lua
 lua examples/binomial_coin_flips.lua
 lua examples/bootstrap_mean.lua
 lua examples/covariance_correlation.lua
+lua examples/probability_helpers.lua
 ```
 
 ---
@@ -423,17 +448,18 @@ lua examples/covariance_correlation.lua
 * API documentation
 * Additional statistics helpers
 * Summary statistics helpers
+* Shape statistics helpers
 * Bivariate statistics helpers
+* Probability helpers
 * Sampling utilities
 * Deterministic simulation support
 * LuaRocks publishing
 
 ### Planned
 
-* More distribution and simulation examples
 * Lightweight cross-reference with LuaHMF
-* Future probability helpers such as `factorial`, `combinations`, and `permutations`
-* Optional formula-based simple regression summaries
+* More distribution and simulation examples
+* Optional simple formula-based regression summaries, without turning LuaSF into a machine learning framework
 
 ---
 
