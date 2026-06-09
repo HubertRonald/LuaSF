@@ -10,15 +10,52 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ### Planned
 
-* Continue improving examples and documentation.
 * Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
-* Evaluate future probability helpers such as `factorial`, `combinations`, and `permutations`.
+* Add more distribution and simulation examples.
 * Evaluate optional formula-based simple regression summaries while keeping ML workflows outside the current scope.
-* Add more distribution examples and simulation-oriented examples.
 
 ---
 
-## [0.6.0] - 2026-06-07
+## [0.7.0] - 2026-06-07
+
+### Added
+
+* Implemented `src/luasf/probability.lua` with probability and combinatorics helpers.
+* Added `factorial(n)`.
+* Added `permutations(n, r)` for ordered selections without repetition.
+* Added `combinations(n, r)` for unordered selections without repetition.
+* Added `permutations_with_repetition(n, r)` for ordered selections with repetition.
+* Added `combinations_with_repetition(n, r)` for unordered selections with repetition.
+* Added `permutations_without_repetition(n, r)` as an alias for `permutations(n, r)`.
+* Added `combinations_without_repetition(n, r)` as an alias for `combinations(n, r)`.
+* Added `nPr(n, r)` as an alias for `permutations(n, r)`.
+* Added `nCr(n, r)` as an alias for `combinations(n, r)`.
+* Added `multiset_permutations(counts)` for distinct arrangements of repeated item groups.
+* Added `spec/test_probability.lua`.
+* Added `examples/probability_helpers.lua`.
+* Added `rockspec/luasf-0.7.0-1.rockspec`.
+
+### Changed
+
+* Updated CI to run probability helper tests and the new probability example.
+* Updated the LuaRocks publishing workflow default rockspec path to `rockspec/luasf-0.7.0-1.rockspec`.
+* Updated README, API documentation, changelog, and contribution notes for probability helpers.
+
+### Notes
+
+Probability helpers distinguish common combinatorics cases:
+
+* Ordered selections without repetition: `permutations(n, r)` and `nPr(n, r)`.
+* Ordered selections with repetition: `permutations_with_repetition(n, r)`.
+* Unordered selections without repetition: `combinations(n, r)` and `nCr(n, r)`.
+* Unordered selections with repetition: `combinations_with_repetition(n, r)`.
+* Repeated item arrangements: `multiset_permutations(counts)`.
+
+Lua numbers may lose precision for very large combinatorial values. LuaSF intentionally keeps these helpers lightweight and dependency-free instead of adding big integer support.
+
+---
+
+## [0.6.0] - 2026-06-08
 
 ### Added
 

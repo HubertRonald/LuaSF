@@ -435,6 +435,166 @@ stats.correlation(x, y)
 
 ---
 
+## Probability helpers
+
+Probability helpers are lightweight combinatorics utilities useful for counting cases in probability, simulation, teaching, and small scripts.
+
+LuaSF distinguishes helpers without repetition and with repetition where appropriate.
+
+> Lua numbers may lose precision for very large combinatorial values. LuaSF intentionally avoids big integer dependencies to remain small and pure Lua.
+
+### `factorial(n)`
+
+Returns the factorial of a non-negative integer.
+
+```lua
+local stats = require("luasf")
+
+print(stats.factorial(0)) -- 1
+print(stats.factorial(5)) -- 120
+```
+
+---
+
+### `permutations(n, r)`
+
+Returns the number of ordered selections of `r` elements from `n` distinct elements without repetition.
+
+This is commonly known as `nPr`.
+
+```text
+nPr = n! / (n - r)!
+```
+
+If `r` is omitted, LuaSF treats it as `n` and returns `n!`.
+
+```lua
+local stats = require("luasf")
+
+print(stats.permutations(5, 3)) -- 60
+print(stats.nPr(5, 3))          -- 60
+```
+
+Requirements:
+
+* `n` must be a non-negative integer.
+* `r` must be a non-negative integer.
+* `r <= n`.
+
+
+Alias:
+
+```lua
+stats.permutations_without_repetition(n, r)
+```
+
+---
+
+### `combinations(n, r)`
+
+Returns the number of unordered selections of `r` elements from `n` distinct elements without repetition.
+
+This is commonly known as `nCr`.
+
+```text
+nCr = n! / (r! * (n - r)!)
+```
+
+```lua
+local stats = require("luasf")
+
+print(stats.combinations(5, 3)) -- 10
+print(stats.nCr(5, 3))          -- 10
+```
+
+Requirements:
+
+* `n` must be a non-negative integer.
+* `r` must be a non-negative integer.
+* `r <= n`.
+
+
+Alias:
+
+```lua
+stats.combinations_without_repetition(n, r)
+```
+
+
+---
+
+### `permutations_with_repetition(n, r)`
+
+Returns the number of ordered selections of `r` elements from `n` possible values with repetition allowed.
+
+This is equivalent to:
+
+```text
+n^r
+```
+
+```lua
+local stats = require("luasf")
+
+print(stats.permutations_with_repetition(5, 3)) -- 125
+print(stats.permutations_with_repetition(10, 4)) -- 10000
+```
+
+Requirements:
+
+* `n` must be a non-negative integer.
+* `r` must be a non-negative integer.
+
+
+This is useful for cases such as PIN-like sequences, codes, or ordered choices where values can repeat.
+
+---
+
+### `combinations_with_repetition(n, r)`
+
+Returns the number of unordered selections of `r` elements from `n` possible values with repetition allowed.
+
+This is equivalent to:
+
+```text
+C(n + r - 1, r)
+```
+
+```lua
+local stats = require("luasf")
+
+print(stats.combinations_with_repetition(5, 3)) -- 35
+```
+
+Requirements:
+
+* `n` must be a positive integer.
+* `r` must be a non-negative integer.
+
+---
+
+### `multiset_permutations(counts)`
+
+Returns the number of distinct arrangements of repeated item groups.
+
+`counts` is an array containing how many times each repeated group appears.
+
+This is equivalent to:
+
+```text
+n! / (a! * b! * c! * ...)
+```
+
+where `n` is the sum of all counts.
+
+```lua
+local stats = require("luasf")
+
+print(stats.multiset_permutations({3, 2, 1})) -- 60
+```
+
+---
+
 ## Sampling utilities
 
 ### `choice(array)`
@@ -938,6 +1098,23 @@ stats.range
 stats.iqr
 stats.percentile
 stats.summary
+stats.central_moment
+stats.skewness
+stats.kurtosis
+stats.excess_kurtosis
+stats.covariance
+stats.correlation
+stats.pearson
+stats.factorial
+stats.permutations
+stats.combinations
+stats.permutations_with_repetition
+stats.combinations_with_repetition
+stats.permutations_without_repetition
+stats.combinations_without_repetition
+stats.multiset_permutations
+stats.nPr
+stats.nCr
 stats.choice
 stats.shuffle
 stats.sample
