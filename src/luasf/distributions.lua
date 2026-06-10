@@ -189,6 +189,16 @@ local function chiSquareVA(n)
   return value
 end
 
+local function studentTVA(df)
+  df = df or 1
+  validation.assert_positive_integer(df, "df")
+
+  local z = normalVA(0, 1)
+  local v = chiSquareVA(df)
+
+  return z / sqrt(v / df)
+end
+
 local function gamVA(alpha, lambda)
   alpha = alpha or 1
   lambda = lambda or 1
@@ -254,6 +264,7 @@ M.binomialVA = binomialVA
 M.geometricVA = geometricVA
 M.poissonVA = poissonVA
 M.chiSquareVA = chiSquareVA
+M.studentTVA = studentTVA
 M.gamVA = gamVA
 M.lognoVA = lognoVA
 M.lognoRandVA = lognoVA
@@ -270,6 +281,8 @@ M.binomial = binomialVA
 M.geometric = geometricVA
 M.poisson = poissonVA
 M.chi_square = chiSquareVA
+M.student_t = studentTVA
+M.t_student = studentTVA
 M.gamma = gamVA
 M.lognormal = lognoVA
 

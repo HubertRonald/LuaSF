@@ -43,7 +43,7 @@ end
 function TestStats:test_module_entry_points()
   local luasf_root = require("LuaSF")
   local luastat_root = require("LuaStat")
-  local luasf_src = require("src.luasf")
+  local luasf_src = require("luasf")
 
   luaunit.assertEquals(type(luasf_root), "table")
   luaunit.assertEquals(type(luastat_root), "table")

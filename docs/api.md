@@ -2,7 +2,7 @@
 
 LuaSF stands for **Lua Statistics Functions**.
 
-This document describes the public LuaSF API after the compatibility revival, Phase 3 statistics/sampling additions, and LuaRocks publishing.
+This document describes the public LuaSF API after the compatibility revival, modularization, statistics/sampling additions, probability helpers, and simple regression summaries.
 
 LuaSF keeps the legacy public API available while adding clearer modern aliases.
 
@@ -56,6 +56,7 @@ src/
     distributions.lua
     bivariate.lua
     probability.lua
+    regression.lua
     validation.lua
     rng.lua
 ```
@@ -715,6 +716,7 @@ LuaSF provides functions for discrete and continuous pseudo-random variables.
 | `geometricVA(p)` | `geometric(p)` | Geometric random variable |
 | `poissonVA(lambda)` | `poisson(lambda)` | Poisson random variable |
 | `chiSquareVA(n)` | `chi_square(n)` | Chi-square random variable |
+| `studentTVA(df)` | `student_t(df)` or `t_student(df)` | Student's t-distributed random variable |
 | `gamVA(alpha, lambda)` | `gamma(alpha, lambda)` | Gamma random variable |
 | `lognoVA(m, s)` | `lognormal(m, s)` | Log-normal random variable |
 | `lognoRandVA(m, s)` | `lognormal(m, s)` | Log-normal random variable |
@@ -964,6 +966,27 @@ stats.chi_square(n)
 
 ---
 
+### `studentTVA(df)`
+
+Returns a Student's t-distributed random value with `df` degrees of freedom.
+
+LuaSF generates it from a standard normal random variable and an independent chi-square random variable:
+
+```text
+T = Z / sqrt(V / df)
+```
+
+where `Z` is approximately standard normal and `V` is chi-square with `df` degrees of freedom.
+
+Modern aliases:
+
+```lua
+stats.student_t(df)
+stats.t_student(df)
+```
+
+---
+
 ### `gamVA(alpha, lambda)`
 
 Returns a gamma-distributed random value.
@@ -1008,6 +1031,95 @@ Modern alias:
 ```lua
 stats.lognormal(m, s)
 ```
+
+---
+
+## Simple regression summaries
+
+LuaSF provides formula-based simple linear regression summaries.
+
+These helpers are intended for lightweight statistics, teaching, small scripts, and simulation-style analysis. They are not a machine learning framework and do not perform iterative optimization.
+
+### `simple_linear_regression(x, y)`
+
+Returns a table with a formula-based simple linear regression summary.
+
+```lua
+local stats = require("luasf")
+
+local x = {1, 2, 3, 4, 5}
+local y = {3, 5, 7, 9, 11}
+
+local model = stats.simple_linear_regression(x, y)
+
+print(model.intercept) -- 1
+print(model.slope)     -- 2
+print(model.r_squared) -- 1
+```
+
+The returned table includes:
+
+```lua
+{
+  n = number,
+  degrees_freedom = number,
+
+  slope = number,
+  intercept = number,
+  coefficients = {
+    intercept = number,
+    slope = number
+  },
+
+  r = number or nil,
+  r_squared = number or nil,
+  adjusted_r_squared = number or nil,
+
+  sst = number,
+  ssr = number,
+  sse = number,
+  mse = number,
+  rmse = number,
+  residual_standard_error = number,
+
+  standard_error_slope = number,
+  standard_error_intercept = number,
+  t_slope = number or nil,
+  t_intercept = number or nil,
+
+  fitted_values = table,
+  residuals = table,
+
+  anova = {
+    regression = { df = 1, ss = number, ms = number, f = number or nil },
+    residual = { df = number, ss = number, ms = number },
+    total = { df = number, ss = number }
+  }
+}
+```
+
+### `predict(model, x)`
+
+Predicts one value or a list of values using a regression model.
+
+```lua
+local prediction = stats.predict(model, 6)
+local predictions = stats.predict(model, {6, 7, 8})
+```
+
+### `fitted_values(model)`
+
+Returns a copy of the model fitted values.
+
+### `residuals(model)`
+
+Returns a copy of the model residuals.
+
+### Scope note
+
+LuaSF reports simple regression coefficients, R and R², sums of squares, MSE, RMSE, residual standard error, standard errors, t statistics, and an ANOVA-style summary.
+
+LuaSF does not compute regression p-values, confidence intervals, critical values, multiple regression, non-linear regression, optimization-based modeling, or machine learning training pipelines.
 
 ---
 
@@ -1070,6 +1182,7 @@ stats.binomialVA
 stats.geometricVA
 stats.poissonVA
 stats.chiSquareVA
+stats.studentTVA
 stats.gamVA
 stats.lognoVA
 stats.lognoRandVA
@@ -1133,6 +1246,8 @@ stats.binomial
 stats.geometric
 stats.poisson
 stats.chi_square
+stats.student_t
+stats.t_student
 stats.gamma
 stats.lognormal
 ```

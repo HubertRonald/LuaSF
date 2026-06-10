@@ -10,13 +10,46 @@ This project follows a lightweight changelog format inspired by [Keep a Changelo
 
 ### Planned
 
+* Add more distribution and simulation-oriented examples.
 * Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
-* Add more distribution and simulation examples.
-* Evaluate optional formula-based simple regression summaries while keeping ML workflows outside the current scope.
+* Explore carefully scoped confidence interval or critical value helpers.
 
 ---
 
-## [0.7.0] - 2026-06-07
+## [0.8.0] - 2026-06-09
+
+### Added
+
+* Added Student's t random variable generator `studentTVA(df)`.
+* Added modern aliases `student_t(df)` and `t_student(df)`.
+* Added `src/luasf/regression.lua` for formula-based simple linear regression summaries.
+* Added `simple_linear_regression(x, y)`.
+* Added `predict(model, x)`.
+* Added `fitted_values(model)`.
+* Added `residuals(model)`.
+* Added regression summary fields for coefficients, R, R², adjusted R², SSE, SSR, SST, MSE, RMSE, residual standard error, standard errors, and t statistics.
+* Added ANOVA-style regression summary without p-values.
+* Added `spec/test_student_t.lua`.
+* Added `spec/test_regression.lua`.
+* Added `examples/student_t_distribution.lua`.
+* Added `examples/simple_linear_regression.lua`.
+* Added `rockspec/luasf-0.8.0-1.rockspec`.
+
+### Changed
+
+* Updated the public facade to expose regression helpers.
+* Updated GitHub Actions workflows to run Student's t and regression tests/examples.
+* Updated LuaRocks workflow default rockspec path to `rockspec/luasf-0.8.0-1.rockspec`.
+* Updated README, API documentation, and contributing notes.
+
+### Scope
+
+* LuaSF now includes formula-based simple regression summaries, but it does not compute p-values or confidence intervals.
+* Multiple regression, non-linear regression, optimization-based modeling, and machine learning workflows remain outside the current scope.
+
+---
+
+## [0.7.0] - 2026-06-09
 
 ### Added
 

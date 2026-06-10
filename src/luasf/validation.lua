@@ -67,6 +67,7 @@ end
 function M.assert_positive_integer(value, name)
   M.assert_integer(value, name)
   assert(value >= 1, name .. " must be greater than or equal to 1")
+  assert(value == floor(value), name .. " must be an integer")
 end
 
 return M

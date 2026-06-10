@@ -17,6 +17,7 @@ LuaSF aims to provide:
 * Probability and combinatorics helpers
 * Pseudo-random variable generation
 * Sampling utilities
+* Formula-based simple regression summaries
 * A small and readable Lua codebase
 * Compatibility with the existing public API
 * Useful examples for simulations, teaching, small scripts, and game/mod scripting
@@ -36,17 +37,20 @@ Good fits for LuaSF:
 * Random variable generation
 * Sampling and simulation utilities
 * Formula-based statistical summaries
+* Small examples and tests
 
 Currently out of scope:
 
-* Machine learning pipelines
+* Large machine learning workflows
 * Optimization-based model training
-* Non-linear regression fitting
-* Deep learning
+* Non-linear regression engines
+* Multiple regression requiring a full matrix algebra subsystem
 * Native dependencies
-* Large framework-style APIs
+* Big integer dependencies
+* Full statistical inference engines with p-value/CDF approximations unless carefully scoped and tested
 
-Formula-based simple regression summaries may be considered in the future, but ML-style model training is intentionally outside the current scope.
+For simple regression, LuaSF may report coefficients, R and R², sums of squares, standard errors, t statistics, and ANOVA-style summaries. Full p-values and confidence intervals are intentionally outside the current scope.
+
 
 ---
 
@@ -74,6 +78,7 @@ binomialVA
 geometricVA
 poissonVA
 chiSquareVA
+studentTVA
 gamVA
 lognoVA
 lognoRandVA
@@ -103,6 +108,7 @@ src/
     distributions.lua
     bivariate.lua
     probability.lua
+    regression.lua
     shape.lua
     validation.lua
     rng.lua
@@ -116,7 +122,8 @@ Recommended module ownership:
 * `bivariate.lua`: two-variable statistics such as covariance and correlation
 * `sampling.lua`: sampling helpers
 * `distributions.lua`: random variable generators
-* `probability.lua`: future probability/combinatorics helpers
+* `probability.lua`: probability/combinatorics helpers
+* `regression.lua`: simple regression
 * `validation.lua`: reusable input validation helpers
 * `shape.lua`: skewness and kurtosis helpers
 * `rng.lua`: random generator and seed helpers
@@ -155,6 +162,8 @@ lua spec/test_sampling.lua
 lua spec/test_bivariate.lua
 lua spec/test_shape.lua
 lua spec/test_probability.lua
+lua spec/test_student_t.lua
+lua spec/test_regression.lua
 ```
 
 Run examples:
@@ -171,6 +180,8 @@ lua examples/bootstrap_mean.lua
 lua examples/covariance_correlation.lua
 lua examples/skewness_kurtosis.lua
 lua examples/probability_helpers.lua
+lua examples/student_t_distribution.lua
+lua examples/simple_linear_regression.lua
 ```
 
 ---
@@ -284,6 +295,7 @@ Before opening a pull request, please check:
 * New modules are included in the rockspec draft when needed.
 * Code remains readable and dependency-light.
 * LuaRocks rockspec files are updated when preparing a package release.
+* Rockspec modules are updated when new source files are added.
 * CI workflows are updated when new tests or examples are added.
 
 
@@ -299,6 +311,7 @@ Prefer:
 * Minimal dependencies
 * Compatibility with Lua 5.1+
 * Explicit validation for public helpers
+* Small, focused modules
 * Formula-based helpers when appropriate
 
 Avoid:
@@ -308,12 +321,15 @@ Avoid:
 * Adding native dependencies
 * Overcomplicating the API
 * Turning LuaSF into a machine learning framework
+* Hidden behavior that makes examples harder to understand
 
 ---
 
 ## Future scope
 
-Simple formula-based regression summaries may be considered later, but optimization-based models and ML workflows are outside the current scope.
+* Explore carefully scoped confidence interval or critical value helpers.
+* Explore a lightweight cross-reference with LuaHMF as a related pure-Lua math helper project.
+* Add more distribution and simulation-oriented examples.
 
 ---
 
