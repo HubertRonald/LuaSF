@@ -60,6 +60,8 @@ jobs:
           lua spec/test_bivariate.lua
           lua spec/test_shape.lua
           lua spec/test_probability.lua
+          lua spec/test_student_t.lua
+          lua spec/test_regression.lua
 
       - name: Run examples
         run: |
@@ -74,3 +76,5 @@ jobs:
           lua examples/covariance_correlation.lua
           lua examples/skewness_kurtosis.lua
           lua examples/probability_helpers.lua
+          lua examples/student_t_distribution.lua
+          lua examples/simple_linear_regression.lua

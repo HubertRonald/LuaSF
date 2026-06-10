@@ -6,7 +6,7 @@ on:
       rockspec:
         description: "Rockspec file to validate or publish"
         required: true
-        default: "rockspec/luasf-0.7.0-1.rockspec"
+        default: "rockspec/luasf-0.8.0-1.rockspec"
         type: string
       publish:
         description: "Publish to LuaRocks after validation"
@@ -52,7 +52,10 @@ jobs:
 
       - name: Test probability helpers entry point
         run: lua -e 'local stats = require("luasf"); print(stats.factorial(5)); print(stats.combinations(5,2)); print(stats.permutations_with_repetition(10,4))'
-
+      
+      - name: Test LuaRocks package entry point
+        run: lua -e 'local stats = require("luasf"); print(stats.simple_linear_regression({1,2,3}, {2,4,6}).slope)'
+      
       - name: Test LuaSF compatibility entry point
         run: lua -e 'local stats = require("LuaSF"); print(stats.sumF({1,2,3}))'
 
