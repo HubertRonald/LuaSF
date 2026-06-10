@@ -1,7 +1,9 @@
 --[[
 LuaSF : Lua Statistics Functions
 
-A lightweight, pure-Lua library for basic statistics and random variables.
+LuaSF is a small, lightweight, pure-Lua library for descriptive statistics,
+shape statistics, bivariate statistics, probability helpers, sampling utilities,
+pseudo-random variable generation, and simple formula-based regression summaries.
 
 MIT License
 
@@ -39,5 +41,6 @@ merge(M, require(prefix .. "sampling"))
 merge(M, require(prefix .. "distributions"))
 merge(M, require(prefix .. "bivariate"))
 merge(M, require(prefix .. "probability"))
+merge(M, require(prefix .. "regression"))
 
 return M
