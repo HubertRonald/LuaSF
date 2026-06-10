@@ -31,9 +31,9 @@
 
 **LuaSF** stands for **Lua Statistics Functions**.
 
-LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, shape statistics, bivariate statistics, probability helpers, sampling utilities, and pseudo-random variable generation.
+LuaSF is a small, lightweight, pure-Lua library for descriptive statistics, shape statistics, bivariate statistics, probability helpers, sampling utilities, pseudo-random variable generation, and simple formula-based regression summaries.
 
-The project started around 2014 and was later published under the MIT License. It has now been revived with compatibility improvements, tests, examples, documentation, a cleaner modular source structure, additional statistics helpers, sampling utilities, probability helpers, and LuaRocks packaging while preserving the existing public API.
+The project started around 2014 and was later published under the MIT License. It has now been revived with compatibility improvements, tests, examples, documentation, a cleaner modular source structure, additional statistics helpers, sampling utilities, probability helpers, LuaRocks packaging, and a compatibility-safe public API.
 
 ---
 
@@ -46,12 +46,15 @@ The project started around 2014 and was later published under the MIT License. I
 * Modular internal source layout
 * Basic descriptive statistics
 * Summary statistics helpers
+* Shape statistics helpers
 * Bivariate statistics helpers
 * Probability and combinatorics helpers
 * Sampling utilities
 * Discrete and continuous pseudo-random variables
+* Simple formula-based regression summaries
 * Compatible with the existing public LuaSF API
 * Useful for simulations, teaching, small scripts, game/mod scripting, and lightweight statistical utilities
+
 
 ---
 
@@ -220,11 +223,23 @@ print(stats.stvF(values)) -- sample standard deviation
 | `geometricVA(p)`           | `geometric(p)`               | Geometric random variable        |
 | `poissonVA(lambda)`        | `poisson(lambda)`            | Poisson random variable          |
 | `chiSquareVA(n)`           | `chi_square(n)`              | Chi-square random variable       |
+| `studentTVA(df)`           | `student_t(df)`              | Student's t random variable      |
 | `gamVA(alpha, lambda)`     | `gamma(alpha, lambda)`       | Gamma random variable            |
 | `lognoVA(m, s)`            | `lognormal(m, s)`            | Log-normal random variable       |
 | `lognoRandVA(m, s)`        | `lognormal(m, s)`            | Log-normal random variable       |
 
 > `nomalVA` and `lognoRandVA` are preserved as compatibility aliases.
+
+### Simple regression summaries
+
+| Function                         | Description                                      |
+| -------------------------------- | ------------------------------------------------ |
+| `simple_linear_regression(x, y)` | Formula-based simple linear regression summary   |
+| `predict(model, x)`              | Predicts one value or a list of values           |
+| `fitted_values(model)`           | Returns fitted values from a regression model    |
+| `residuals(model)`               | Returns residuals from a regression model        |
+
+LuaSF reports coefficients, R and R², sums of squares, mean squared error, residual standard error, standard errors, t statistics, and an ANOVA-style summary for simple regression. It does not compute p-values or confidence intervals.
 
 ---
 
@@ -337,6 +352,30 @@ print(stats.choice({"first", "second", "third"})) -- first
 stats.reset_rng()
 ```
 
+### Student's t random variable
+
+```lua
+local stats = require("luasf")
+
+print(stats.student_t(10))
+```
+
+### Simple linear regression
+
+```lua
+local stats = require("luasf")
+
+local x = {1, 2, 3, 4, 5}
+local y = {3, 5, 7, 9, 11}
+
+local model = stats.simple_linear_regression(x, y)
+
+print(model.intercept) -- 1
+print(model.slope)     -- 2
+print(model.r_squared) -- 1
+print(stats.predict(model, 6)) -- 13
+```
+
 ---
 
 ## Project structure
@@ -353,6 +392,7 @@ LuaSF/
       distributions.lua
       bivariate.lua
       probability.lua
+      regression.lua
       validation.lua
       rng.lua
   spec/
@@ -362,6 +402,8 @@ LuaSF/
     test_bivariate.lua
     test_shape.lua
     test_probability.lua
+    test_student_t.lua
+    test_regression.lua
   examples/
     dice_simulation.lua
     normal_quality_control.lua
@@ -374,6 +416,8 @@ LuaSF/
     covariance_correlation.lua
     skewness_kurtosis.lua
     probability_helpers.lua
+    student_t_distribution.lua
+    simple_linear_regression.lua
   docs/
     api.md
   .github/
@@ -387,6 +431,7 @@ LuaSF/
     luasf-0.5.0-1.rockspec
     luasf-0.6.0-1.rockspec
     luasf-0.7.0-1.rockspec
+    luasf-0.8.0-1.rockspec
   LuaSF.lua
   LuaStat.lua
   README.md
@@ -409,11 +454,14 @@ eval "$(luarocks path --local)"
 Run tests:
 
 ```bash
-lua spec/test_stats.lua
-lua spec/test_distributions.lua
-lua spec/test_sampling.lua
 lua spec/test_bivariate.lua
+lua spec/test_distributions.lua
 lua spec/test_probability.lua
+lua spec/test_regression.lua
+lua spec/test_sampling.lua
+lua spec/test_shape.lua
+lua spec/test_stats.lua
+lua spec/test_student_t.lua
 ```
 
 ---
@@ -421,16 +469,19 @@ lua spec/test_probability.lua
 ## Running examples
 
 ```bash
-lua examples/dice_simulation.lua
-lua examples/normal_quality_control.lua
-lua examples/gamma_distribution.lua
-lua examples/weighted_loot_drop.lua
-lua examples/monte_carlo_pi.lua
-lua examples/poisson_arrivals.lua
 lua examples/binomial_coin_flips.lua
 lua examples/bootstrap_mean.lua
 lua examples/covariance_correlation.lua
+lua examples/dice_simulation.lua
+lua examples/gamma_distribution.lua
+lua examples/monte_carlo_pi.lua
+lua examples/normal_quality_control.lua
+lua examples/poisson_arrivals.lua
 lua examples/probability_helpers.lua
+lua examples/simple_linear_regression.lua
+lua examples/skewness_kurtosis.lua
+lua examples/student_t_distribution.lua
+lua examples/weighted_loot_drop.lua
 ```
 
 ---
@@ -450,24 +501,26 @@ lua examples/probability_helpers.lua
 * Summary statistics helpers
 * Shape statistics helpers
 * Bivariate statistics helpers
-* Probability helpers
+* Probability and combinatorics helpers
 * Sampling utilities
 * Deterministic simulation support
+* Student's t random variable generator
+* Formula-based simple linear regression summaries
 * LuaRocks publishing
 
-### Planned
+### Possible future work
 
-* Lightweight cross-reference with LuaHMF
 * More distribution and simulation examples
-* Optional simple formula-based regression summaries, without turning LuaSF into a machine learning framework
+* Lightweight cross-reference with LuaHMF
+* Carefully scoped confidence interval or critical value helpers
 
 ---
 
 ## Scope
 
-LuaSF is focused on lightweight statistics, probability, random variables, and simulation helpers.
+LuaSF is focused on lightweight statistics, probability, random variables, regression summaries, and simulation helpers.
 
-Optimization-based modeling, machine learning workflows, model training pipelines, and non-linear regression are intentionally outside the current scope of LuaSF.
+Optimization-based modeling, machine learning workflows, model training pipelines, non-linear regression, and full statistical inference engines are intentionally outside the current scope of LuaSF.
 
 ---
 
